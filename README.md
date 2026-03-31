@@ -37,6 +37,7 @@ The core frameworks for any project seeking CDCF endorsement.
 | [project-vetting-criteria.md](./project-governance/project-vetting-criteria.md) | **Policy** | The foundational 8 criteria for any CDCF project. |
 | [lifecycle.md](./project-governance/lifecycle.md) | Procedure | Definition of the stages from proposal through incubation, graduation, and retirement. |
 | [committees.md](./project-governance/committees.md) | Structure | Governance bodies: Board of Directors, TCSC, and PMCs. |
+| [project-types.md](./project-governance/project-types.md) | Policy | Distinction between Foundation Projects and Community Projects. |
 | [definitions.md](./project-governance/definitions.md) | Glossary | Shared vocabulary for CDCF governance and vetting. |
 
 ---
