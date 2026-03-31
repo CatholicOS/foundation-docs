@@ -54,6 +54,25 @@ The three research memos form an integrated argument. The fragmentation memo est
 
 ---
 
+### Standards
+
+Shared standards enable Catholic software projects to be interoperable and rooted in Catholic tradition. Standards committees — composed of ecclesial authorities, academic experts, Catholic university CS departments, and practitioners — define canonical identifiers and data representations for the realities of Catholic life.
+
+| Document | Type | Description |
+|:---|:---|:---|
+| [overview.md](./standards/overview.md) | **Policy** | Why standards matter, current and future standards, and the relationship between standards and projects. |
+| [committees.md](./standards/committees.md) | Procedure | Composition, formation, working process, and governance principles for standards committees. |
+
+#### Proposed standards (committees to be formed)
+
+| Standard | Repository | Domain |
+|:---|:---|:---|
+| **CMDDR** | [CatholicOS/cmddr](https://github.com/CatholicOS/cmddr) | Canonical identifiers for Magisterial documents |
+| **CRMETDR** | [CatholicOS/crmetdr](https://github.com/CatholicOS/crmetdr) | Canonical identifiers for Roman Missal editions |
+| **CLEDR** | [CatholicOS/cledr](https://github.com/CatholicOS/cledr) | Canonical identifiers for liturgical celebrations |
+
+---
+
 ## Magisterial Grounding
 
 | Source | Issuing Body | Year |
