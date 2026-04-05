@@ -129,7 +129,7 @@ jobs:
               PARENT_PAGE=$(curl -s \
                 -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
                 "$WP_REST_URL/wp/v2/pages?slug=${PARENT_SLUG}&status=publish,draft")
-              PID=$(echo "$PARENT_PAGE" | jq -r '.[0].id // empty')
+              PID=$(echo "$PARENT_PAGE" | jq -r 'if type == "array" then .[0].id // empty else empty end')
               if [ -n "$PID" ] && [ "$PID" != "null" ]; then
                 PARENT_IDS[$PARENT_SLUG]="$PID"
                 echo "  Resolved parent '${PARENT_SLUG}' (ID: $PID)"
@@ -147,7 +147,7 @@ jobs:
               -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
               "$WP_REST_URL/wp/v2/pages?slug=${SLUG}&status=publish,draft")
 
-            PAGE_ID=$(echo "$EXISTING" | jq -r '.[0].id // empty')
+            PAGE_ID=$(echo "$EXISTING" | jq -r 'if type == "array" then .[0].id // empty else empty end')
 
             PAYLOAD=$(jq -n \
               --arg title "$TITLE" \
