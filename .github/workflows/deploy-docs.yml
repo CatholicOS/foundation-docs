@@ -25,20 +25,6 @@ jobs:
       - name: Detect changed documents
         id: changes
         run: |
-          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
-            PREV_TAG=$(git tag --sort=-creatordate | head -2 | tail -1)
-            if [ -n "$PREV_TAG" ] && [ "$PREV_TAG" != "$GITHUB_REF_NAME" ]; then
-              DIFF_BASE="$PREV_TAG"
-            else
-              DIFF_BASE="HEAD~1"
-            fi
-          else
-            DIFF_BASE="HEAD~1"
-          fi
-
-          echo "Comparing against: $DIFF_BASE"
-          CHANGED=$(git diff --name-only "$DIFF_BASE" HEAD 2>/dev/null || echo "FIRST_RUN")
-
           # All governed documents: directory/filename (without .md)
           DOCS=(
             "ai-governance/ai-vetting-criteria"
@@ -54,16 +40,38 @@ jobs:
             "standards/committees"
           )
 
-          CHANGED_DOCS=""
-          for DOC in "${DOCS[@]}"; do
-            if echo "$CHANGED" | grep -q "${DOC}.md"; then
-              BASENAME=$(basename "$DOC")
-              echo "  ${DOC}.md changed"
-              CHANGED_DOCS="${CHANGED_DOCS:+$CHANGED_DOCS }${DOC}"
+          # Determine diff base
+          DEPLOY_ALL=false
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            PREV_TAG=$(git tag --sort=-creatordate | head -2 | tail -1)
+            if [ -n "$PREV_TAG" ] && [ "$PREV_TAG" != "$GITHUB_REF_NAME" ]; then
+              DIFF_BASE="$PREV_TAG"
             else
-              echo "  ${DOC}.md unchanged"
+              # First tag ever — deploy everything
+              DEPLOY_ALL=true
             fi
-          done
+          else
+            # Manual trigger — deploy everything
+            DEPLOY_ALL=true
+          fi
+
+          CHANGED_DOCS=""
+          if [ "$DEPLOY_ALL" = true ]; then
+            echo "First deployment or manual trigger — deploying all documents."
+            CHANGED_DOCS="${DOCS[*]}"
+          else
+            echo "Comparing against: $DIFF_BASE"
+            CHANGED=$(git diff --name-only "$DIFF_BASE" HEAD 2>/dev/null || echo "")
+
+            for DOC in "${DOCS[@]}"; do
+              if echo "$CHANGED" | grep -q "${DOC}.md"; then
+                echo "  ${DOC}.md changed"
+                CHANGED_DOCS="${CHANGED_DOCS:+$CHANGED_DOCS }${DOC}"
+              else
+                echo "  ${DOC}.md unchanged"
+              fi
+            done
+          fi
 
           echo "changed_docs=$CHANGED_DOCS" >> "$GITHUB_OUTPUT"
 
