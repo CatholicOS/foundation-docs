@@ -39,8 +39,9 @@ for DOC in "${DOCS[@]}"; do
 done
 
 echo "Building combined standalone HTML..."
-pandoc "$COMBINED" \
+LINK_MODE=combined pandoc "$COMBINED" \
   --standalone --embed-resources \
+  --lua-filter=scripts/fix-internal-links.lua \
   --css scripts/docs-print.css \
   --wrap=none \
   -f markdown -t html5 \

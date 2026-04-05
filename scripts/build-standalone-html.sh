@@ -57,8 +57,9 @@ for entry in "${DOCS[@]}"; do
   echo "$NAV" > "$TEMP"
   cat "$src" >> "$TEMP"
 
-  pandoc "$TEMP" \
+  LINK_MODE=html pandoc "$TEMP" \
     --standalone --embed-resources \
+    --lua-filter=scripts/fix-internal-links.lua \
     --css scripts/docs-print.css \
     --metadata "title=${title}" \
     --wrap=none \
