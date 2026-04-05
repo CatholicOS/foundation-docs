@@ -68,7 +68,6 @@ jobs:
           echo "changed_docs=$CHANGED_DOCS" >> "$GITHUB_OUTPUT"
 
       - name: Install pandoc
-        if: steps.changes.outputs.changed_docs != ''
         uses: pandoc/actions/setup@v1
 
       - name: Deploy changed documents to WordPress
