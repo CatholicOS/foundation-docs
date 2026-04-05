@@ -165,21 +165,29 @@ jobs:
 
             if [ -n "$PAGE_ID" ] && [ "$PAGE_ID" != "null" ]; then
               echo "  Updating existing page (ID: $PAGE_ID)..."
-              RESPONSE=$(curl -s -f -X POST \
+              HTTP_CODE=$(curl -s -o /tmp/wp-response.json -w '%{http_code}' -X POST \
                 -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
                 -H "Content-Type: application/json" \
                 -d "$PAYLOAD" \
                 "$WP_REST_URL/wp/v2/pages/$PAGE_ID")
             else
               echo "  Creating new page..."
-              RESPONSE=$(curl -s -f -X POST \
+              HTTP_CODE=$(curl -s -o /tmp/wp-response.json -w '%{http_code}' -X POST \
                 -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
                 -H "Content-Type: application/json" \
                 -d "$PAYLOAD" \
                 "$WP_REST_URL/wp/v2/pages")
-              PAGE_ID=$(echo "$RESPONSE" | jq -r '.id')
             fi
 
+            RESPONSE=$(cat /tmp/wp-response.json)
+
+            if [[ "$HTTP_CODE" -ge 400 ]]; then
+              echo "  ERROR: HTTP $HTTP_CODE"
+              echo "  Response: $RESPONSE"
+              exit 1
+            fi
+
+            PAGE_ID=$(echo "$RESPONSE" | jq -r '.id')
             echo "  Deployed (page ID: $PAGE_ID)."
             DEPLOYED_IDS="${DEPLOYED_IDS:+$DEPLOYED_IDS }${PAGE_ID}"
           done
