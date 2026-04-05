@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# Build individual standalone HTML files for each governance document,
+# with navigation links between them.
+set -euo pipefail
+
+DIST="dist"
+mkdir -p "$DIST"
+
+# All documents: source_path|slug|title
+DOCS=(
+  "project-governance/definitions.md|definitions|CDCF Governance Definitions"
+  "project-governance/project-types.md|project-types|CDCF Project Types"
+  "project-governance/lifecycle.md|lifecycle|CDCF Project Lifecycle"
+  "project-governance/project-vetting-criteria.md|project-vetting-criteria|CDCF Project Vetting Criteria"
+  "project-governance/committees.md|committees|CDCF Governance Bodies"
+  "ai-governance/ai-vetting-criteria.md|ai-vetting-criteria|AI Vetting Criteria"
+  "ai-governance/fragmented-catholic-ai-governance.md|fragmented-catholic-ai-governance|Fragmented Catholic AI Governance"
+  "ai-governance/governance-as-code-catholic-ai.md|governance-as-code-catholic-ai|Governance-as-Code for Catholic AI"
+  "ai-governance/trusted-synthetic-data-ministry-ai.md|trusted-synthetic-data-ministry-ai|Trusted Synthetic Data for Ministry AI"
+  "standards/overview.md|standards-overview|CDCF Standards Overview"
+  "standards/committees.md|standards-committees|CDCF Standards Committees"
+)
+
+# Build navigation HTML
+NAV='<nav class="doc-nav"><strong>CDCF Governance Documents</strong><ul>'
+NAV+='<li><strong>Project Governance</strong><ul>'
+for entry in "${DOCS[@]}"; do
+  IFS='|' read -r src slug title <<< "$entry"
+  case "$src" in
+    project-governance/*) NAV+="<li><a href=\"${slug}.html\">${title}</a></li>" ;;
+  esac
+done
+NAV+='</ul></li>'
+NAV+='<li><strong>AI Governance</strong><ul>'
+for entry in "${DOCS[@]}"; do
+  IFS='|' read -r src slug title <<< "$entry"
+  case "$src" in
+    ai-governance/*) NAV+="<li><a href=\"${slug}.html\">${title}</a></li>" ;;
+  esac
+done
+NAV+='</ul></li>'
+NAV+='<li><strong>Standards</strong><ul>'
+for entry in "${DOCS[@]}"; do
+  IFS='|' read -r src slug title <<< "$entry"
+  case "$src" in
+    standards/*) NAV+="<li><a href=\"${slug}.html\">${title}</a></li>" ;;
+  esac
+done
+NAV+='</ul></li></ul></nav><hr>'
+
+for entry in "${DOCS[@]}"; do
+  IFS='|' read -r src slug title <<< "$entry"
+  echo "Building ${slug}.html..."
+
+  # Prepend navigation, then the document content
+  TEMP="$DIST/${slug}-temp.md"
+  echo "$NAV" > "$TEMP"
+  cat "$src" >> "$TEMP"
+
+  pandoc "$TEMP" \
+    --standalone --embed-resources \
+    --css scripts/docs-print.css \
+    --metadata "title=${title}" \
+    --wrap=none \
+    -f markdown -t html5 \
+    -o "$DIST/${slug}.html"
+
+  rm -f "$TEMP"
+done
+
+echo "Done: standalone HTML files in $DIST/"

@@ -1,6 +1,7 @@
 # CDCF Project Lifecycle
 
-This document describes the stages through which a technology project passes within the Catholic Digital Commons Foundation (CDCF). The process is designed to ensure mission alignment, technical excellence, and sustainable governance.
+This document describes the stages through which a technology project passes within the Catholic Digital Commons Foundation (CDCF). The process is designed to ensure mission
+alignment, technical excellence, and sustainable governance.
 
 ---
 

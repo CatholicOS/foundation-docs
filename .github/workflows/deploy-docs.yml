@@ -1,0 +1,277 @@
+name: Deploy Governance Docs to WordPress
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Convert & publish governance docs
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed documents
+        id: changes
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            PREV_TAG=$(git tag --sort=-creatordate | head -2 | tail -1)
+            if [ -n "$PREV_TAG" ] && [ "$PREV_TAG" != "$GITHUB_REF_NAME" ]; then
+              DIFF_BASE="$PREV_TAG"
+            else
+              DIFF_BASE="HEAD~1"
+            fi
+          else
+            DIFF_BASE="HEAD~1"
+          fi
+
+          echo "Comparing against: $DIFF_BASE"
+          CHANGED=$(git diff --name-only "$DIFF_BASE" HEAD 2>/dev/null || echo "FIRST_RUN")
+
+          # All governed documents: directory/filename (without .md)
+          DOCS=(
+            "ai-governance/ai-vetting-criteria"
+            "ai-governance/fragmented-catholic-ai-governance"
+            "ai-governance/governance-as-code-catholic-ai"
+            "ai-governance/trusted-synthetic-data-ministry-ai"
+            "project-governance/definitions"
+            "project-governance/project-types"
+            "project-governance/lifecycle"
+            "project-governance/project-vetting-criteria"
+            "project-governance/committees"
+            "standards/overview"
+            "standards/committees"
+          )
+
+          CHANGED_DOCS=""
+          for DOC in "${DOCS[@]}"; do
+            if echo "$CHANGED" | grep -q "${DOC}.md"; then
+              BASENAME=$(basename "$DOC")
+              echo "  ${DOC}.md changed"
+              CHANGED_DOCS="${CHANGED_DOCS:+$CHANGED_DOCS }${DOC}"
+            else
+              echo "  ${DOC}.md unchanged"
+            fi
+          done
+
+          echo "changed_docs=$CHANGED_DOCS" >> "$GITHUB_OUTPUT"
+
+      - name: Install pandoc
+        if: steps.changes.outputs.changed_docs != ''
+        uses: pandoc/actions/setup@v1
+
+      - name: Deploy changed documents to WordPress
+        if: steps.changes.outputs.changed_docs != ''
+        id: deploy
+        env:
+          WP_REST_URL: ${{ vars.WP_REST_URL }}
+          WP_APP_USERNAME: ${{ secrets.WP_APP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: |
+          # Document titles keyed by directory/basename
+          declare -A DOC_TITLES=(
+            ["ai-governance/ai-vetting-criteria"]="CDCF Project Vetting Criteria: AI Tools"
+            ["ai-governance/fragmented-catholic-ai-governance"]="Fragmented Catholic AI Governance at Scale"
+            ["ai-governance/governance-as-code-catholic-ai"]="Governance-as-Code for Catholic AI Agent Deployment"
+            ["ai-governance/trusted-synthetic-data-ministry-ai"]="Trusted Synthetic Data for Ministry-Scale AI"
+            ["project-governance/definitions"]="CDCF Governance Definitions"
+            ["project-governance/project-types"]="CDCF Project Types: Foundation Projects and Community Projects"
+            ["project-governance/lifecycle"]="CDCF Project Lifecycle"
+            ["project-governance/project-vetting-criteria"]="CDCF Project Vetting Criteria: General Framework"
+            ["project-governance/committees"]="CDCF Governance Bodies"
+            ["standards/overview"]="CDCF Standards: Overview"
+            ["standards/committees"]="CDCF Standards Committees"
+          )
+
+          # Parent page slugs for each section
+          declare -A SECTION_PARENTS=(
+            ["ai-governance"]="ai-governance"
+            ["project-governance"]="project-governance"
+            ["standards"]="standards"
+          )
+
+          # Cache resolved parent page IDs
+          declare -A PARENT_IDS
+
+          DEPLOYED_IDS=""
+
+          for DOC in ${{ steps.changes.outputs.changed_docs }}; do
+            TITLE="${DOC_TITLES[$DOC]}"
+            # Derive slug — prefix with section name to avoid collisions
+            # (e.g. both project-governance/committees and standards/committees)
+            SECTION=$(dirname "$DOC")
+            BASENAME=$(basename "$DOC")
+            if [ "$SECTION" = "standards" ]; then
+              SLUG="standards-${BASENAME}"
+            else
+              SLUG="$BASENAME"
+            fi
+            PARENT_SLUG="${SECTION_PARENTS[$SECTION]}"
+
+            echo "Converting ${DOC}.md..."
+            pandoc "${DOC}.md" --wrap=none -f markdown -t html5 -o "${SLUG}.html"
+
+            HTML_CONTENT=$(cat "${SLUG}.html")
+
+            # Resolve parent page ID (cached per section)
+            if [ -z "${PARENT_IDS[$PARENT_SLUG]+x}" ]; then
+              PARENT_PAGE=$(curl -s \
+                -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+                "$WP_REST_URL/wp/v2/pages?slug=${PARENT_SLUG}&status=publish,draft")
+              PID=$(echo "$PARENT_PAGE" | jq -r '.[0].id // empty')
+              if [ -n "$PID" ] && [ "$PID" != "null" ]; then
+                PARENT_IDS[$PARENT_SLUG]="$PID"
+                echo "  Resolved parent '${PARENT_SLUG}' (ID: $PID)"
+              else
+                PARENT_IDS[$PARENT_SLUG]="0"
+                echo "  Warning: parent page '${PARENT_SLUG}' not found — publishing without parent."
+              fi
+            fi
+            PARENT_ID="${PARENT_IDS[$PARENT_SLUG]}"
+
+            echo "Deploying '${TITLE}' (slug: ${SLUG}, parent: ${PARENT_ID})..."
+
+            # Check if a page with this slug already exists
+            EXISTING=$(curl -s \
+              -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+              "$WP_REST_URL/wp/v2/pages?slug=${SLUG}&status=publish,draft")
+
+            PAGE_ID=$(echo "$EXISTING" | jq -r '.[0].id // empty')
+
+            PAYLOAD=$(jq -n \
+              --arg title "$TITLE" \
+              --arg slug "$SLUG" \
+              --arg content "$HTML_CONTENT" \
+              --argjson parent "$PARENT_ID" \
+              '{title: $title, slug: $slug, content: $content, parent: $parent, status: "publish"}')
+
+            if [ -n "$PAGE_ID" ] && [ "$PAGE_ID" != "null" ]; then
+              echo "  Updating existing page (ID: $PAGE_ID)..."
+              RESPONSE=$(curl -s -f -X POST \
+                -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+                -H "Content-Type: application/json" \
+                -d "$PAYLOAD" \
+                "$WP_REST_URL/wp/v2/pages/$PAGE_ID")
+            else
+              echo "  Creating new page..."
+              RESPONSE=$(curl -s -f -X POST \
+                -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+                -H "Content-Type: application/json" \
+                -d "$PAYLOAD" \
+                "$WP_REST_URL/wp/v2/pages")
+              PAGE_ID=$(echo "$RESPONSE" | jq -r '.id')
+            fi
+
+            echo "  Deployed (page ID: $PAGE_ID)."
+            DEPLOYED_IDS="${DEPLOYED_IDS:+$DEPLOYED_IDS }${PAGE_ID}"
+          done
+
+          echo "deployed_ids=$DEPLOYED_IDS" >> "$GITHUB_OUTPUT"
+          echo ""
+          echo "All changed documents deployed."
+
+      - name: Translate deployed pages
+        if: steps.deploy.outputs.deployed_ids != ''
+        env:
+          WP_REST_URL: ${{ vars.WP_REST_URL }}
+          WP_APP_USERNAME: ${{ secrets.WP_APP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: |
+          DEPLOYED_IDS="${{ steps.deploy.outputs.deployed_ids }}"
+          TARGET_LANGS=("it" "es" "fr" "pt" "de")
+
+          for PAGE_ID in $DEPLOYED_IDS; do
+            echo "Translating page ID $PAGE_ID..."
+            for LANG in "${TARGET_LANGS[@]}"; do
+              RESPONSE=$(curl -s -f -X POST \
+                -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+                -H "Content-Type: application/json" \
+                -d "{\"source_id\": ${PAGE_ID}, \"target_lang\": \"${LANG}\"}" \
+                "$WP_REST_URL/cdcf/v1/translate")
+
+              TRANSLATED_ID=$(echo "$RESPONSE" | jq -r '.post_id // empty')
+              MESSAGE=$(echo "$RESPONSE" | jq -r '.message // empty')
+
+              if [ -n "$TRANSLATED_ID" ]; then
+                echo "  ${LANG}: page ID ${TRANSLATED_ID} -- ${MESSAGE}"
+              else
+                echo "  ${LANG}: translation failed"
+                echo "  Response: $RESPONSE"
+              fi
+            done
+          done
+
+          echo ""
+          echo "All translations complete."
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Build standalone HTML pages
+        run: npm run build:html
+
+      - name: Build combined PDF
+        run: npm run build:pdf
+        env:
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+
+          # For manual triggers, auto-determine tag
+          if [[ "$TAG" != v* ]]; then
+            LATEST_TAG=$(git tag --list 'v*' --sort=-version:refname | head -1)
+            if [ -z "$LATEST_TAG" ]; then
+              TAG="v0.1"
+            else
+              MAJOR=$(echo "$LATEST_TAG" | sed 's/^v//' | cut -d. -f1)
+              MINOR=$(echo "$LATEST_TAG" | sed 's/^v//' | cut -d. -f2)
+              if [ "$MINOR" -ge 9 ]; then
+                TAG="v$((MAJOR + 1)).0"
+              else
+                TAG="v${MAJOR}.$((MINOR + 1))"
+              fi
+            fi
+
+            gh api repos/${{ github.repository }}/git/refs \
+              -f ref="refs/tags/$TAG" \
+              -f sha="$(git rev-parse HEAD)"
+          fi
+
+          # Collect all build artifacts
+          ASSETS=()
+          for f in dist/*.html dist/*.pdf; do
+            [ -f "$f" ] && ASSETS+=("$f")
+          done
+
+          if gh release view "$TAG" &>/dev/null; then
+            echo "Release $TAG already exists — uploading assets."
+            gh release upload "$TAG" "${ASSETS[@]}" --clobber
+          else
+            gh release create "$TAG" \
+              --title "Governance Docs $TAG" \
+              --notes "CDCF governance documentation, $TAG." \
+              "${ASSETS[@]}"
+          fi
