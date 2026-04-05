@@ -6,14 +6,14 @@ set -euo pipefail
 DIST="dist"
 mkdir -p "$DIST"
 
-# Document order — grouped by section
+# Document order — matches the frontend navigation
 DOCS=(
   # Project Governance
-  "project-governance/definitions.md"
-  "project-governance/project-types.md"
-  "project-governance/lifecycle.md"
   "project-governance/project-vetting-criteria.md"
+  "project-governance/lifecycle.md"
   "project-governance/committees.md"
+  "project-governance/project-types.md"
+  "project-governance/definitions.md"
   # AI Governance
   "ai-governance/ai-vetting-criteria.md"
   "ai-governance/fragmented-catholic-ai-governance.md"
