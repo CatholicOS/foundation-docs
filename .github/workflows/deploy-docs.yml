@@ -108,8 +108,15 @@ jobs:
 
           for DOC in ${{ steps.changes.outputs.changed_docs }}; do
             TITLE="${DOC_TITLES[$DOC]}"
-            SLUG=$(basename "$DOC")
+            # Derive slug — prefix with section name to avoid collisions
+            # (e.g. both project-governance/committees and standards/committees)
             SECTION=$(dirname "$DOC")
+            BASENAME=$(basename "$DOC")
+            if [ "$SECTION" = "standards" ]; then
+              SLUG="standards-${BASENAME}"
+            else
+              SLUG="$BASENAME"
+            fi
             PARENT_SLUG="${SECTION_PARENTS[$SECTION]}"
 
             echo "Converting ${DOC}.md..."
