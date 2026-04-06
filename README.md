@@ -2,7 +2,7 @@
 
 [![Status](https://img.shields.io/badge/status-working%20draft-yellow?style=flat-square)](https://github.com/mj3b/governance-frameworks)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)](./LICENSE)
-[![Version](https://img.shields.io/badge/version-v0.2-lightgrey?style=flat-square)](https://github.com/mj3b/governance-frameworks)
+[![Version](https://img.shields.io/badge/version-v0.1-lightgrey?style=flat-square)](https://github.com/CatholicOS/foundation-docs)
 [![CDCF](https://img.shields.io/badge/foundation-Catholic%20Digital%20Commons-8B0000?style=flat-square)](https://catholicdigitalcommons.org)
 [![Grounded in](https://img.shields.io/badge/grounded%20in-Catholic%20Tradition-gold?style=flat-square)](https://www.vatican.va)
 
