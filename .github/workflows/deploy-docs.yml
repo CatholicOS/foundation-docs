@@ -125,7 +125,7 @@ jobs:
             PARENT_SLUG="${SECTION_PARENTS[$SECTION]}"
 
             echo "Converting ${DOC}.md..."
-            pandoc "${DOC}.md" --wrap=none --lua-filter=scripts/fix-internal-links.lua -f markdown -t html5 -o "${SLUG}.html"
+            pandoc "${DOC}.md" --wrap=none -M section="$SECTION" --lua-filter=scripts/fix-internal-links.lua -f markdown -t html5 -o "${SLUG}.html"
 
             HTML_CONTENT=$(cat "${SLUG}.html")
 

@@ -1,7 +1,7 @@
 -- Pandoc Lua filter: rewrite internal .md links for different output targets.
 --
 -- Set the LINK_MODE environment variable (or pandoc metadata) to control behavior:
---   "website"    (default) → /slug           (absolute paths for WordPress)
+--   "website"    (default) → /governance/<section>/slug (absolute paths for WordPress)
 --   "html"                 → slug.html       (relative paths for standalone HTML files)
 --   "combined"             → #heading-anchor (fragment links within the combined PDF)
 --
@@ -10,11 +10,15 @@
 --   - Standards docs get a "standards-" prefix to avoid slug collisions
 
 local mode = os.getenv("LINK_MODE") or "website"
+local current_section = os.getenv("LINK_SECTION") or nil
 
--- Read mode from pandoc metadata as fallback
+-- Read mode and section from pandoc metadata as fallback
 function Meta(meta)
   if meta["link-mode"] then
     mode = pandoc.utils.stringify(meta["link-mode"])
+  end
+  if meta["section"] then
+    current_section = pandoc.utils.stringify(meta["section"])
   end
 end
 
@@ -59,8 +63,13 @@ function Link(el)
       el.target = '#' .. base
     end
   else
-    -- website mode (default)
-    el.target = '/' .. base .. anchor
+    -- website mode (default): /governance/<section>/<slug>
+    local section = dir or current_section
+    if section then
+      el.target = '/governance/' .. section .. '/' .. base .. anchor
+    else
+      el.target = '/governance/' .. base .. anchor
+    end
   end
 
   return el
