@@ -17,7 +17,7 @@
 5. [What Catholic Institutions Could Build](#what-catholic-institutions-could-build)
 6. [The Three-Layer Stack](#the-three-layer-stack)
 7. [The Federated Architecture Imperative](#the-federated-architecture-imperative)
-8. [The CDCF Role: Validation Standards, Not Data Commons](#the-cdcf-role-validation-standards-not-data-commons)
+8. [The CDCF Role: Federated Data Commons and Validation Standards](#the-cdcf-role-federated-data-commons-and-validation-standards)
 9. [Relationship to the CDCF Vetting Criteria](#relationship-to-the-cdcf-vetting-criteria)
 10. [Bibliography](#bibliography)
 
@@ -176,20 +176,25 @@ are what move between institutions or become available for research and AI devel
 architecture is to establish the validation standards and certification criteria that ensure synthetic datasets generated at different institutions are interoperable and
 trustworthy, without requiring those institutions to share or pool their underlying real data.
 
-This reframes the CDCF's contribution from data infrastructure operator (a role that would require legal authority, technical capacity, and governance structures the Foundation
-currently lacks) to standard-setter and validator, a role that aligns precisely with what the CDCF is designed to do.
+The CDCF's bylaws charge it to "coordinate, develop, steward, and disseminate open-source software, data repositories, technical standards, and digital platforms." A federated
+architecture allows the Foundation to fulfill that charter in phases: establishing validation standards and certification criteria as the immediate priority, then growing into its
+chartered role as steward of shared synthetic data repositories as institutional capacity and ecclesial trust develop. The federated model ensures that both roles reinforce each
+other — standards make the commons trustworthy, and the commons gives the standards practical weight.
 
 ---
 
-## The CDCF Role: Validation Standards, Not Data Commons
+## The CDCF Role: Federated Data Commons and Validation Standards
 
-The CDCF is positioned to make three specific contributions to Catholic synthetic data infrastructure that require governance expertise rather than data operations.
+The CDCF's manifesto describes a "builder commons" dedicated to aggregating, vetting, and communalizing resources for the Catholic Church's digital mission, and the bylaws
+explicitly charge the Foundation to steward "data repositories" alongside software, standards, and platforms. Catholic synthetic data infrastructure is a direct expression of that
+charter. The CDCF is positioned to make four specific contributions that span both governance standard-setting and data commons stewardship.
 
-| Contribution                      | What It Defines                                                                                                                                                                                                               | Why It Matters                                                                                    |
-| :-------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
-| **Validation standards**          | Fidelity and privacy thresholds a synthetic dataset must meet for Catholic institutional certification — statistical distance, privacy attack resistance, domain-specific criteria for health, education, and social services | Shared standards prevent each institution from solving the same problem independently             |
-| **Certification criteria**        | What a synthetic data generation process must demonstrate to receive CDCF certification, paralleling the AI vetting criteria                                                                                                  | Gives Catholic institutions assurance that certified platforms produce trustworthy synthetic data |
-| **Interoperability requirements** | Data standards and schema conventions allowing synthetic datasets from different Catholic institutions to be combined or compared for multi-institutional research                                                            | Technical complement to governance interoperability the vetting criteria provide for AI tools     |
+| Contribution                          | What It Defines                                                                                                                                                                                                               | Why It Matters                                                                                                       |
+| :------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------- |
+| **Validation standards**              | Fidelity and privacy thresholds a synthetic dataset must meet for Catholic institutional certification — statistical distance, privacy attack resistance, domain-specific criteria for health, education, and social services | Shared standards prevent each institution from solving the same problem independently                                |
+| **Certification criteria**            | What a synthetic data generation process must demonstrate to receive CDCF certification, paralleling the AI vetting criteria                                                                                                  | Gives Catholic institutions assurance that certified platforms produce trustworthy synthetic data                    |
+| **Interoperability requirements**     | Data standards and schema conventions allowing synthetic datasets from different Catholic institutions to be combined or compared for multi-institutional research                                                            | Technical complement to governance interoperability the vetting criteria provide for AI tools                        |
+| **Shared data repository stewardship** | Hosting and curating certified synthetic datasets as a federated commons — cataloging, versioning, and governing access to synthetic data contributed by participating institutions                                            | Fulfills the CDCF's chartered role as a data repository steward, giving institutions a trusted commons to share with |
 
 ---
 
