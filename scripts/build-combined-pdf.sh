@@ -15,7 +15,7 @@ DOCS=(
   "project-governance/project-types.md"
   "project-governance/definitions.md"
   # Research
-  "research/fragmented-catholic-ai-governance.md"
+  "research/fragmented-catholic-digital-governance.md"
   "research/governance-as-code-catholic-ai.md"
   "research/trusted-synthetic-data-ministry-ai.md"
   # Standards

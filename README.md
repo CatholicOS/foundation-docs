@@ -51,7 +51,7 @@ Supplementary research memos informing the design of the vetting criteria.
 
 | Document                                                                                    | Type          | Description                                             |
 | :------------------------------------------------------------------------------------------ | :------------ | :------------------------------------------------------ |
-| [fragmented-catholic-ai-governance.md](./research/fragmented-catholic-ai-governance.md)     | Research memo | The urgency of shared AI governance standards.           |
+| [fragmented-catholic-digital-governance.md](./research/fragmented-catholic-digital-governance.md) | Research memo | The urgency of shared digital governance standards. |
 | [governance-as-code-catholic-ai.md](./research/governance-as-code-catholic-ai.md)           | Research memo | Machine-enforceable deployment governance architecture. |
 | [trusted-synthetic-data-ministry-ai.md](./research/trusted-synthetic-data-ministry-ai.md)   | Research memo | Synthetic data infrastructure for ministry-scale AI.    |
 

@@ -13,7 +13,7 @@ DOCS=(
   "project-governance/committees.md|committees|CDCF Governance Bodies"
   "project-governance/project-types.md|project-types|CDCF Project Types"
   "project-governance/definitions.md|definitions|CDCF Governance Definitions"
-  "research/fragmented-catholic-ai-governance.md|fragmented-catholic-ai-governance|Fragmented Catholic AI Governance"
+  "research/fragmented-catholic-digital-governance.md|fragmented-catholic-digital-governance|Fragmented Catholic Digital Governance"
   "research/governance-as-code-catholic-ai.md|governance-as-code-catholic-ai|Governance-as-Code for Catholic AI"
   "research/trusted-synthetic-data-ministry-ai.md|trusted-synthetic-data-ministry-ai|Trusted Synthetic Data for Ministry AI"
   "standards/overview.md|standards-overview|CDCF Standards Overview"

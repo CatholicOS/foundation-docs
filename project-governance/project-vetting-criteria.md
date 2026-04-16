@@ -288,9 +288,9 @@ These criteria represent the incubation and graduation layer of a broader govern
 Team), which is actively engaged in a structured planning process to evaluate and prioritize top AI trends facing Catholic institutions. Three research memos emerging from that
 process inform the design of these criteria and are submitted alongside this document.
 
-**[Fragmented Catholic AI Governance at Scale](../research/fragmented-catholic-ai-governance.md)** documents why Catholic institutions across dioceses, health systems, and
-education networks are producing dozens of incompatible governance standards for structurally identical use cases, and why a shared canonical baseline is urgent. This research
-provides the empirical foundation for the criteria's design.
+**[Fragmented Catholic Digital Governance at Scale](../research/fragmented-catholic-digital-governance.md)** documents why Catholic institutions across dioceses, health systems,
+and education networks are producing dozens of incompatible governance standards and digital representations for structurally identical use cases, and why shared canonical
+baselines are urgent. This research provides the empirical foundation for the criteria's design.
 
 **[Governance-as-Code for Catholic AI Agent Deployment](../research/governance-as-code-catholic-ai.md)** argues that deployment policies should become machine-readable, auditable
 specifications operating as hard gates rather than advisory documents. This research informs Criterion 6's governance specification requirement and describes the more technically
