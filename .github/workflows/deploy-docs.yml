@@ -26,8 +26,8 @@ jobs:
           # All governed documents: directory/filename (without .md)
           DOCS=(
             "research/fragmented-catholic-digital-governance"
-            "research/governance-as-code-catholic-ai"
-            "research/trusted-synthetic-data-ministry-ai"
+            "research/governance-as-code-catholic-technology"
+            "research/trusted-data-infrastructure-catholic-ministry"
             "project-governance/definitions"
             "project-governance/project-types"
             "project-governance/lifecycle"
@@ -86,8 +86,8 @@ jobs:
           # Document titles keyed by directory/basename
           declare -A DOC_TITLES=(
             ["research/fragmented-catholic-digital-governance"]="Fragmented Catholic Digital Governance at Scale"
-            ["research/governance-as-code-catholic-ai"]="Governance-as-Code for Catholic AI Agent Deployment"
-            ["research/trusted-synthetic-data-ministry-ai"]="Trusted Synthetic Data for Ministry-Scale AI"
+            ["research/governance-as-code-catholic-technology"]="Governance-as-Code for Catholic Technology Deployment"
+            ["research/trusted-data-infrastructure-catholic-ministry"]="Trusted Data Infrastructure for Catholic Ministry"
             ["project-governance/definitions"]="CDCF Governance Definitions"
             ["project-governance/project-types"]="CDCF Project Types: Foundation Projects and Community Projects"
             ["project-governance/lifecycle"]="CDCF Project Lifecycle"

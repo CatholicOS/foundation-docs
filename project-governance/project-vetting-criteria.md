@@ -292,13 +292,14 @@ process inform the design of these criteria and are submitted alongside this doc
 and education networks are producing dozens of incompatible governance standards and digital representations for structurally identical use cases, and why shared canonical
 baselines are urgent. This research provides the empirical foundation for the criteria's design.
 
-**[Governance-as-Code for Catholic AI Agent Deployment](../research/governance-as-code-catholic-ai.md)** argues that deployment policies should become machine-readable, auditable
-specifications operating as hard gates rather than advisory documents. This research informs Criterion 6's governance specification requirement and describes the more technically
-rigorous implementation this framework is designed to grow into.
+**[Governance-as-Code for Catholic Technology Deployment](../research/governance-as-code-catholic-technology.md)** argues that deployment policies should become machine-readable,
+auditable specifications operating as hard gates rather than advisory documents. This research informs Criterion 6's governance specification requirement and describes the more
+technically rigorous implementation this framework is designed to grow into.
 
-**[Trusted Synthetic Data for Ministry-Scale AI](../research/trusted-synthetic-data-ministry-ai.md)** addresses the data infrastructure that would enable AI development across
-Catholic health, education, social services, and parish life without exposing personal data. This research grounds Criterion 7's extended data stewardship requirements and
-anticipates the data governance obligations accompanying more sophisticated Catholic AI development.
+**[Trusted Data Infrastructure for Catholic Ministry](../research/trusted-data-infrastructure-catholic-ministry.md)** addresses the data infrastructure — both synthetic
+institutional data and standardized ecclesial data — that would enable responsible technology development across Catholic health, education, social services, and parish life.
+This research grounds Criterion 7's extended data stewardship requirements and anticipates the data governance obligations accompanying more sophisticated Catholic technology
+development.
 
 ---
 
