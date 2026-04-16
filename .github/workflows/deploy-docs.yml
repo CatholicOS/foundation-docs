@@ -25,10 +25,9 @@ jobs:
         run: |
           # All governed documents: directory/filename (without .md)
           DOCS=(
-            "ai-governance/ai-vetting-criteria"
-            "ai-governance/fragmented-catholic-ai-governance"
-            "ai-governance/governance-as-code-catholic-ai"
-            "ai-governance/trusted-synthetic-data-ministry-ai"
+            "research/fragmented-catholic-ai-governance"
+            "research/governance-as-code-catholic-ai"
+            "research/trusted-synthetic-data-ministry-ai"
             "project-governance/definitions"
             "project-governance/project-types"
             "project-governance/lifecycle"
@@ -86,14 +85,13 @@ jobs:
         run: |
           # Document titles keyed by directory/basename
           declare -A DOC_TITLES=(
-            ["ai-governance/ai-vetting-criteria"]="CDCF Project Vetting Criteria: AI Tools"
-            ["ai-governance/fragmented-catholic-ai-governance"]="Fragmented Catholic AI Governance at Scale"
-            ["ai-governance/governance-as-code-catholic-ai"]="Governance-as-Code for Catholic AI Agent Deployment"
-            ["ai-governance/trusted-synthetic-data-ministry-ai"]="Trusted Synthetic Data for Ministry-Scale AI"
+            ["research/fragmented-catholic-ai-governance"]="Fragmented Catholic AI Governance at Scale"
+            ["research/governance-as-code-catholic-ai"]="Governance-as-Code for Catholic AI Agent Deployment"
+            ["research/trusted-synthetic-data-ministry-ai"]="Trusted Synthetic Data for Ministry-Scale AI"
             ["project-governance/definitions"]="CDCF Governance Definitions"
             ["project-governance/project-types"]="CDCF Project Types: Foundation Projects and Community Projects"
             ["project-governance/lifecycle"]="CDCF Project Lifecycle"
-            ["project-governance/project-vetting-criteria"]="CDCF Project Vetting Criteria: General Framework"
+            ["project-governance/project-vetting-criteria"]="CDCF Project Vetting Criteria"
             ["project-governance/committees"]="CDCF Governance Bodies"
             ["standards/overview"]="CDCF Standards: Overview"
             ["standards/committees"]="CDCF Standards Committees"
@@ -101,8 +99,8 @@ jobs:
 
           # Parent page slugs for each section
           declare -A SECTION_PARENTS=(
-            ["ai-governance"]="ai-governance"
             ["project-governance"]="project-governance"
+            ["research"]="research"
             ["standards"]="standards"
           )
 

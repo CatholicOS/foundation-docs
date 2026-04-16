@@ -4,7 +4,7 @@
 | :---------------- | :------------------------------------------------------------------------------------------ |
 | **Document type** | Research memo                                                                               |
 | **Status**        | Working draft — U.S.A. C-DART 1 discussion                                                  |
-| **Relationship**  | Supplementary research underlying [CDCF AI Vetting Criteria v0.1](./ai-vetting-criteria.md) |
+| **Relationship**  | Supplementary research underlying [CDCF Project Vetting Criteria v0.2](../project-governance/project-vetting-criteria.md) |
 
 ---
 
@@ -163,8 +163,9 @@ institutional and jurisdictional boundaries.
 
 ## Relationship to the CDCF Vetting Criteria
 
-The [CDCF AI Vetting Criteria](./ai-vetting-criteria.md) represent the first operational expression of this solidarity layer. The eight criteria, organized across two evaluation
-gates, establish a shared baseline for what "vetted" means for AI tools submitted to the Catholic Digital Commons Foundation.
+The [CDCF Project Vetting Criteria](../project-governance/project-vetting-criteria.md) represent the first operational expression of this solidarity
+layer. The eight criteria, organized across two evaluation gates, establish a shared baseline for what "vetted" means for AI tools submitted to
+the Catholic Digital Commons Foundation.
 
 The fragmentation research documented here provides the empirical foundation for why that baseline is urgent. The criteria are designed to be adoptable by any diocese, health
 system, or Catholic institution regardless of which local governance model they operate under, whether standing council, episcopal decree, educator working group, or other.

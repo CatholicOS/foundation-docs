@@ -4,7 +4,7 @@
 | :---------------- | :------------------------------------------------------------------------------------------ |
 | **Document type** | Research memo                                                                               |
 | **Status**        | Working draft — U.S.A. C-DART 1 discussion                                                  |
-| **Relationship**  | Supplementary research underlying [CDCF AI Vetting Criteria v0.1](./ai-vetting-criteria.md) |
+| **Relationship**  | Supplementary research underlying [CDCF Project Vetting Criteria v0.2](../project-governance/project-vetting-criteria.md) |
 
 ---
 
@@ -195,8 +195,9 @@ The CDCF is positioned to make three specific contributions to Catholic syntheti
 
 ## Relationship to the CDCF Vetting Criteria
 
-Criterion 7 of the [CDCF AI Vetting Criteria](./ai-vetting-criteria.md) addresses training data governance directly: a tool trained on data from Catholic institutions carries an
-obligation to those institutions and to the populations they serve, and the terms under which that data was used must be disclosed and evaluated as part of the graduation review.
+Criterion 7 of the [CDCF Project Vetting Criteria](../project-governance/project-vetting-criteria.md) addresses training data governance
+directly: a tool trained on data from Catholic institutions carries an obligation to those institutions and to the populations they serve, and
+the terms under which that data was used must be disclosed and evaluated as part of the graduation review.
 
 That criterion anticipates a future in which Catholic institutions are actively developing AI tools trained on Catholic institutional data. Trusted synthetic data infrastructure is
 what makes that future possible at scale. An institution that deploys validated synthetic data generation can develop AI tools for its own use and contribute to shared Catholic AI

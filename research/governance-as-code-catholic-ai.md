@@ -4,7 +4,7 @@
 | :---------------- | :------------------------------------------------------------------------------------------ |
 | **Document type** | Research memo                                                                               |
 | **Status**        | Working draft — U.S.A. C-DART 1 discussion                                                  |
-| **Relationship**  | Supplementary research underlying [CDCF AI Vetting Criteria v0.1](./ai-vetting-criteria.md) |
+| **Relationship**  | Supplementary research underlying [CDCF Project Vetting Criteria v0.2](../project-governance/project-vetting-criteria.md) |
 
 ---
 
@@ -194,8 +194,9 @@ Three concrete actions follow from this research for Catholic institutions at an
 
 ## Relationship to the CDCF Vetting Criteria
 
-Criterion 6 of the [CDCF AI Vetting Criteria](./ai-vetting-criteria.md) is the direct operational expression of this research. It requires a deployment governance specification as
-a condition of incubation acceptance, with the four-state decision model (go, conditional-go, no-go, defer) as the structural framework for that specification.
+Criterion 6 of the [CDCF Project Vetting Criteria](../project-governance/project-vetting-criteria.md) is the direct operational expression of
+this research. It requires a deployment governance specification as a condition of incubation acceptance, with the four-state decision model
+(go, conditional-go, no-go, defer) as the structural framework for that specification.
 
 Criterion 8 extends the governance-as-code principle to the deployment architecture of the tools themselves, requiring that tools be deployable at the appropriate level of
 ecclesial authority without overriding their core governance design.
