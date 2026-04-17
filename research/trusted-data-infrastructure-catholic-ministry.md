@@ -251,13 +251,26 @@ documents, the directory of dioceses — can be defined, maintained, and served 
 locally; the data itself can be served from a shared commons, because it represents universal realities that belong to no local institution individually.
 
 Local adaptations exist within this tier: proper calendars for specific dioceses and religious orders, approved vernacular translations of Scripture and liturgical texts, diocesan
-supplements to canonical structures. These adaptations fall under the governance of the local bishops' conference or diocese that published them. The architecture must respect that
-jurisdiction. But the adaptations are governed extensions of a universal baseline, and by agreement with local institutions, they too can be contributed to and served from the
-shared commons — provided the governance framework respects the authority of the institutions that produce them.
+supplements to canonical structures. These adaptations fall under the governance of the local bishops' conference or diocese that published them, and many also fall under
+copyright — which serves as a legitimate means of protecting both the authority of the local institution and the rights of the publisher charged by that institution with producing
+the vernacular adaptation, to whom due compensation may be owed.
+
+The architecture must respect both jurisdiction and copyright. Centrally serving local adaptations does not require that copyrighted material be published as open source. A hybrid
+model accommodates both realities:
+
+1. **Federated option.** The local institution serves its own adaptations locally, using CDCF standard schemas for interoperability. The data never leaves the institution's
+   infrastructure. This is always available as the default.
+2. **Centralized option by agreement.** Following an agreement with the local institution, the CDCF serves the adaptation centrally while protecting the copyrighted data
+   according to any norms established by the rights holder — access controls, licensing terms, attribution requirements, or distribution restrictions as the local institution
+   sees fit.
+
+Both options operate on the same shared standards and schemas, so downstream software projects interoperate regardless of whether a given adaptation is served locally or
+centrally. The distinction is operational (where the data is hosted and under what terms) rather than structural (how the data is represented).
 
 This distinction matters because it determines what the CDCF can and should build. For Tier 1 data, the CDCF sets validation standards for synthetic data generation. For Tier 2
 data, the CDCF defines interoperability standards. For Tier 3 data, the CDCF can go further: it can define the canonical standards, maintain the authoritative datasets, and serve
-the shared baseline and its contributed local adaptations as operational infrastructure for the entire Catholic software ecosystem.
+the shared baseline as operational infrastructure for the entire Catholic software ecosystem — with local adaptations served centrally where agreements permit, or federated where
+they do not.
 
 ---
 
