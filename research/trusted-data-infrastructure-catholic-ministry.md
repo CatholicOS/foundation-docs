@@ -17,8 +17,8 @@
 5. [Synthetic Data for AI Development](#synthetic-data-for-ai-development)
 6. [What Catholic Institutions Could Build](#what-catholic-institutions-could-build)
 7. [The Three-Layer Stack](#the-three-layer-stack)
-8. [The Federated Architecture Imperative](#the-federated-architecture-imperative)
-9. [The CDCF Role: Standards and Validation, Not Data Operations](#the-cdcf-role-standards-and-validation-not-data-operations)
+8. [Three Tiers of Catholic Data](#three-tiers-of-catholic-data)
+9. [The CDCF Role Across Data Tiers](#the-cdcf-role-across-data-tiers)
 10. [Relationship to the CDCF](#relationship-to-the-cdcf)
 11. [Bibliography](#bibliography)
 
@@ -214,38 +214,77 @@ Trusted data infrastructure for Catholic ministry operates across three layers t
 
 ---
 
-## The Federated Architecture Imperative
+## Three Tiers of Catholic Data
 
 A critique raised in C-DART 1 session discussions warrants direct acknowledgment: data heterogeneity across legally independent Catholic institutions would make a pooled Catholic
-data commons technically unsound. Catholic hospitals, schools, and Charities agencies operate under different legal entities, different regulatory frameworks, and different
-diocesan governance structures. Their data schemas, data quality, and data governance norms are incompatible in ways that would produce noise rather than signal if combined
-naively.
+data commons technically unsound. That critique is accurate — but it applies to one category of data, not all of them. The appropriate architecture depends on what kind of data is
+being governed.
 
-That critique is accurate, and it has a specific architectural response: federated infrastructure rather than pooled data commons.
+Catholic data falls into three distinct tiers, each requiring a different infrastructure model.
 
-For **sensitive institutional data**, federated synthetic data generation occurs locally at each institution using its own source data. The generated synthetic datasets, rather
-than the real data, are what move between institutions or become available for research and AI development. Each institution retains full control over its source data.
+### Tier 1: Sensitive institutional data — federated, never pooled
 
-For **shared ecclesial data**, the federated pattern operates differently: the CDCF defines canonical standards (the authoritative identifiers and representations), and each
-software project implements those standards locally. Interoperability is achieved not by pooling data but by conforming to shared schemas. A liturgical calendar app in one country
-and a parish management system in another can exchange calendar data because both implement the same CLEDR identifiers — not because either has access to the other's database.
+Patient records, student files, case management data, parish giving records, and sacramental records pertaining to specific individuals are sensitive data protected by HIPAA,
+FERPA, diocesan privacy norms, and pastoral trust. Catholic hospitals, schools, and Charities agencies operate under different legal entities, different regulatory frameworks, and
+different diocesan governance structures. Their data schemas, data quality, and data governance norms are incompatible in ways that would produce noise rather than signal if
+combined naively.
 
-In both cases, the CDCF's role is to establish the standards and validation criteria that ensure interoperability and trustworthiness, without requiring institutions to share or
-pool their underlying data. This reframes the CDCF's contribution from data infrastructure operator (a role that would require legal authority, technical capacity, and governance
-structures the Foundation currently lacks) to standard-setter and validator — a role that aligns precisely with what the CDCF is designed to do.
+This data is never the subject of a data commons. The architectural response is federated synthetic data generation: each institution generates synthetic datasets locally from its
+own source data, and only the synthetic datasets — containing no real individual records — move between institutions or become available for research and AI development. Each
+institution retains full control over its source data.
+
+### Tier 2: Local institutional data — locally governed, not a commons
+
+Operational data specific to a diocese, school system, or agency — enrollment figures, staffing models, facility data, local program configurations — is not sensitive in the same
+way as personal records, but it is specific to the institution that produces it. It falls under the governance of the local institution and is not a candidate for a data commons.
+
+This data benefits from shared standards (so that diocesan systems can interoperate where needed) but remains locally owned and locally governed.
+
+### Tier 3: Universal Church data — a genuine data commons
+
+The Liturgy, the structure of Sacred Scripture, the documents of the Magisterium, Canon Law, the organizational structure of dioceses and parishes — these realities belong to the
+universal Church. They are not the private data of any institution. They originate from the Church's universal authority and are shared across every diocese, parish, and Catholic
+institution worldwide.
+
+This data is the natural subject of a data commons. The shared baseline — the General Roman Calendar, the canonical books of the Bible, the classification of Magisterial
+documents, the directory of dioceses — can be defined, maintained, and served centrally. It is not merely a matter of defining standards that independent projects implement
+locally; the data itself can be served from a shared commons, because it represents universal realities that belong to no local institution individually.
+
+Local adaptations exist within this tier: proper calendars for specific dioceses and religious orders, approved vernacular translations of Scripture and liturgical texts, diocesan
+supplements to canonical structures. These adaptations fall under the governance of the local bishops' conference or diocese that published them. The architecture must respect that
+jurisdiction. But the adaptations are governed extensions of a universal baseline, and by agreement with local institutions, they too can be contributed to and served from the
+shared commons — provided the governance framework respects the authority of the institutions that produce them.
+
+This distinction matters because it determines what the CDCF can and should build. For Tier 1 data, the CDCF sets validation standards for synthetic data generation. For Tier 2
+data, the CDCF defines interoperability standards. For Tier 3 data, the CDCF can go further: it can define the canonical standards, maintain the authoritative datasets, and serve
+the shared baseline and its contributed local adaptations as operational infrastructure for the entire Catholic software ecosystem.
 
 ---
 
-## The CDCF Role: Standards and Validation, Not Data Operations
+## The CDCF Role Across Data Tiers
 
-The CDCF is positioned to make contributions to Catholic data infrastructure that require governance expertise rather than data operations.
+The CDCF's role differs by data tier — from standard-setting and validation for sensitive institutional data, to operational data stewardship for the shared patrimony of the
+universal Church.
 
-| Contribution                           | What It Defines                                                                                                                                                     | Why It Matters                                                                                    |
-| :------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------ |
-| **Synthetic data validation**          | Fidelity and privacy thresholds a synthetic dataset must meet for certification — statistical distance, privacy attack resistance, domain-specific criteria          | Shared standards prevent each institution from solving the same problem independently             |
-| **Synthetic data certification**       | What a synthetic data generation process must demonstrate to receive CDCF certification, paralleling the project vetting criteria                                   | Gives Catholic institutions assurance that certified platforms produce trustworthy synthetic data |
-| **Ecclesial data standards**           | Canonical identifiers and data representations for the realities of Catholic life — liturgical celebrations, Scripture editions, Magisterial documents, structures   | Establishes the shared digital vocabulary that enables interoperability across the Church          |
-| **Interoperability requirements**      | Schema conventions allowing both synthetic datasets and ecclesial data from different sources to be combined, compared, or exchanged for cross-institutional use    | Technical complement to governance interoperability the vetting criteria provide for projects     |
+| Data Tier                                  | CDCF Role                                                                                                                                        |
+| :----------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tier 1: Sensitive institutional data**   | Defines validation standards and certification criteria for synthetic data generation. Sets fidelity and privacy thresholds. Does not hold data. |
+| **Tier 2: Local institutional data**       | Defines interoperability standards and schema conventions. Does not hold data.                                                                   |
+| **Tier 3: Universal Church data**          | Defines canonical standards, maintains authoritative datasets, and serves the shared baseline with contributed local adaptations.                |
+
+For Tier 1, the CDCF contributes governance expertise: fidelity and privacy thresholds a synthetic dataset must meet for certification, what a synthetic data generation process
+must demonstrate to receive CDCF certification (paralleling the project vetting criteria), and schema conventions that allow synthetic datasets from different institutions to be
+combined or compared for cross-institutional research. Shared standards prevent each institution from solving the same problem independently.
+
+For Tier 2, the CDCF contributes interoperability standards: common schemas and conventions that allow locally governed systems to exchange data where needed, without requiring
+those systems to pool their data or cede governance to a central authority.
+
+For Tier 3, the CDCF's contribution is qualitatively different. The Foundation is positioned not only to define the canonical identifiers and data representations for the
+realities of Catholic life — liturgical celebrations, Scripture editions, Magisterial documents, canonical structures — but to maintain and serve those datasets as operational
+infrastructure. The General Roman Calendar, for example, is not merely a standard to be implemented locally; it is a shared dataset that can be served centrally, with local proper
+calendars contributed by the dioceses and religious orders that govern them. The same applies to a registry of Catholic Bible editions, a classification of Magisterial documents,
+or a directory of dioceses and parishes. The CDCF can serve the universal baseline and, by agreement with the local institutions that govern them, incorporate and serve the local
+adaptations — creating a genuine data commons for the shared patrimony of the Church.
 
 ---
 
