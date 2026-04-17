@@ -276,8 +276,10 @@ they do not.
 
 ## The CDCF Role Across Data Tiers
 
-The CDCF's role differs by data tier — from standard-setting and validation for sensitive institutional data, to operational data stewardship for the shared patrimony of the
-universal Church.
+The CDCF's bylaws charge it to "coordinate, develop, steward, and disseminate open-source software, data repositories, technical standards, and digital platforms," and its
+manifesto describes a "builder commons" dedicated to aggregating, vetting, and communalizing resources for the Catholic Church's digital mission. The three-tier data model maps
+directly onto that charter — with the CDCF's role escalating from standard-setting for sensitive data, through interoperability standards for local data, to operational data
+stewardship for the shared patrimony of the universal Church.
 
 | Data Tier                                  | CDCF Role                                                                                                                                        |
 | :----------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -297,7 +299,7 @@ realities of Catholic life — liturgical celebrations, Scripture editions, Magi
 infrastructure. The General Roman Calendar, for example, is not merely a standard to be implemented locally; it is a shared dataset that can be served centrally, with local proper
 calendars contributed by the dioceses and religious orders that govern them. The same applies to a registry of Catholic Bible editions, a classification of Magisterial documents,
 or a directory of dioceses and parishes. The CDCF can serve the universal baseline and, by agreement with the local institutions that govern them, incorporate and serve the local
-adaptations — creating a genuine data commons for the shared patrimony of the Church.
+adaptations — fulfilling its chartered role as steward of data repositories and creating a genuine data commons for the shared patrimony of the Church.
 
 ---
 
