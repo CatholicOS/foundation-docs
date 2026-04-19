@@ -34,7 +34,12 @@ for DOC in "${DOCS[@]}"; do
     # Page break between documents
     printf '\n\n<div class="doc-separator"></div>\n\n' >> "$COMBINED"
   fi
-  cat "$DOC" >> "$COMBINED"
+  # Namespace footnotes to avoid collisions between documents.
+  # Derives a prefix from the full path (e.g. "project-governance/committees" → "pgc")
+  # by taking the first letter of each hyphenated segment.
+  DOC_KEY="${DOC%.md}"
+  PREFIX=$(echo "$DOC_KEY" | tr '/' '-' | sed 's/\([a-z]\)[a-z]*/\1/g; s/-//g')
+  sed "s/\[\^\([^]]*\)\]/[^${PREFIX}-\1]/g" "$DOC" >> "$COMBINED"
 done
 
 echo "Building combined standalone HTML..."
