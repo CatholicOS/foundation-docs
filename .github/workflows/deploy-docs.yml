@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
 
@@ -74,7 +74,7 @@ jobs:
           echo "changed_docs=$CHANGED_DOCS" >> "$GITHUB_OUTPUT"
 
       - name: Install pandoc
-        uses: pandoc/actions/setup@v1.1.1
+        uses: pandoc/actions/setup@ae312111f8aecde13e11672badd8c90a26b036c0 # v1.1.1
 
       - name: Deploy changed documents to WordPress
         if: steps.changes.outputs.changed_docs != ''
@@ -229,7 +229,7 @@ jobs:
           echo "All translations complete."
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version: '24'
           cache: 'npm'
