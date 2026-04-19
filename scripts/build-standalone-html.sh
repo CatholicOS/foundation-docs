@@ -13,10 +13,9 @@ DOCS=(
   "project-governance/committees.md|committees|CDCF Governance Bodies"
   "project-governance/project-types.md|project-types|CDCF Project Types"
   "project-governance/definitions.md|definitions|CDCF Governance Definitions"
-  "ai-governance/ai-vetting-criteria.md|ai-vetting-criteria|AI Vetting Criteria"
-  "ai-governance/fragmented-catholic-ai-governance.md|fragmented-catholic-ai-governance|Fragmented Catholic AI Governance"
-  "ai-governance/governance-as-code-catholic-ai.md|governance-as-code-catholic-ai|Governance-as-Code for Catholic AI"
-  "ai-governance/trusted-synthetic-data-ministry-ai.md|trusted-synthetic-data-ministry-ai|Trusted Synthetic Data for Ministry AI"
+  "research/fragmented-catholic-digital-governance.md|fragmented-catholic-digital-governance|Fragmented Catholic Digital Governance"
+  "research/governance-as-code-catholic-technology.md|governance-as-code-catholic-technology|Governance-as-Code for Catholic Technology"
+  "research/trusted-data-infrastructure-catholic-ministry.md|trusted-data-infrastructure-catholic-ministry|Trusted Data Infrastructure for Catholic Ministry"
   "standards/overview.md|standards-overview|CDCF Standards Overview"
   "standards/committees.md|standards-committees|CDCF Standards Committees"
 )
@@ -31,11 +30,11 @@ for entry in "${DOCS[@]}"; do
   esac
 done
 NAV+='</ul></li>'
-NAV+='<li><strong>AI Governance</strong><ul>'
+NAV+='<li><strong>Research</strong><ul>'
 for entry in "${DOCS[@]}"; do
   IFS='|' read -r src slug title <<< "$entry"
   case "$src" in
-    ai-governance/*) NAV+="<li><a href=\"${slug}.html\">${title}</a></li>" ;;
+    research/*) NAV+="<li><a href=\"${slug}.html\">${title}</a></li>" ;;
   esac
 done
 NAV+='</ul></li>'

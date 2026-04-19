@@ -24,39 +24,36 @@ A working repository for governance documentation supporting the **Catholic Digi
 This repository holds the policy frameworks, evaluation criteria, and research documentation that inform how the CDCF reviews, incubates, and graduates technology projects. It is
 modeled on established foundation governance (such as the Apache Software Foundation) but is uniquely grounded in Catholic Social Teaching and Canon Law.
 
-The documentation is organized into a general project governance framework, applicable to all technology projects, and specialized domain-specific criteria (starting with AI
-governance).
+The documentation is organized into a unified project governance framework (with domain-specific extensions for AI integrated inline), supplementary research memos, and standards
+for canonical data interoperability.
 
 ---
 
 ## Document Stack
 
-### General Project Governance
+### Project Governance
 
 The core frameworks for any project seeking CDCF endorsement.
 
-| Document                                                                        | Type       | Description                                                                            |
-| :------------------------------------------------------------------------------ | :--------- | :------------------------------------------------------------------------------------- |
-| [project-vetting-criteria.md](./project-governance/project-vetting-criteria.md) | **Policy** | The foundational 8 criteria for any CDCF project.                                      |
-| [lifecycle.md](./project-governance/lifecycle.md)                               | Procedure  | Definition of the stages from proposal through incubation, graduation, and retirement. |
-| [committees.md](./project-governance/committees.md)                             | Structure  | Governance bodies: Board of Directors, TCSC, and PMCs.                                 |
-| [project-types.md](./project-governance/project-types.md)                       | Policy     | Distinction between Foundation Projects and Community Projects.                        |
-| [definitions.md](./project-governance/definitions.md)                           | Glossary   | Shared vocabulary for CDCF governance and vetting.                                     |
+| Document                                                                        | Type       | Description                                                                                               |
+| :------------------------------------------------------------------------------ | :--------- | :-------------------------------------------------------------------------------------------------------- |
+| [project-vetting-criteria.md](./project-governance/project-vetting-criteria.md) | **Policy** | The foundational 8 criteria for any CDCF project, with AI domain extensions integrated inline.            |
+| [lifecycle.md](./project-governance/lifecycle.md)                               | Procedure  | Definition of the stages from proposal through incubation, graduation, and retirement.                    |
+| [committees.md](./project-governance/committees.md)                             | Structure  | Governance bodies: Board of Directors, TCSC, and PMCs.                                                    |
+| [project-types.md](./project-governance/project-types.md)                       | Policy     | Distinction between Foundation Projects and Community Projects.                                           |
+| [definitions.md](./project-governance/definitions.md)                           | Glossary   | Shared vocabulary for CDCF governance and vetting.                                                        |
 
 ---
 
-### Specialized Domain Governance
+### Research
 
-Domain-specific extensions to the general framework.
+Supplementary research memos informing the design of the vetting criteria.
 
-#### AI Governance
-
-| Document                                                                                       | Type          | Description                                                                 |
-| :--------------------------------------------------------------------------------------------- | :------------ | :-------------------------------------------------------------------------- |
-| [ai-vetting-criteria.md](./ai-governance/ai-vetting-criteria.md)                               | **Policy**    | Operational vetting criteria for AI tools, extending the general framework. |
-| [fragmented-catholic-ai-governance.md](./ai-governance/fragmented-catholic-ai-governance.md)   | Research memo | The urgency of shared AI governance standards.                              |
-| [governance-as-code-catholic-ai.md](./ai-governance/governance-as-code-catholic-ai.md)         | Research memo | Machine-enforceable deployment governance architecture.                     |
-| [trusted-synthetic-data-ministry-ai.md](./ai-governance/trusted-synthetic-data-ministry-ai.md) | Research memo | Synthetic data infrastructure for ministry-scale AI.                        |
+| Document                                                                                    | Type          | Description                                             |
+| :------------------------------------------------------------------------------------------ | :------------ | :------------------------------------------------------ |
+| [fragmented-catholic-digital-governance.md](./research/fragmented-catholic-digital-governance.md) | Research memo | The urgency of shared digital governance standards. |
+| [governance-as-code-catholic-technology.md](./research/governance-as-code-catholic-technology.md)                       | Research memo | Machine-enforceable deployment governance architecture.       |
+| [trusted-data-infrastructure-catholic-ministry.md](./research/trusted-data-infrastructure-catholic-ministry.md)       | Research memo | Trusted data infrastructure for Catholic ministry.            |
 
 ---
 
