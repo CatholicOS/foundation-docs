@@ -86,13 +86,13 @@ diocese may be blocked in a neighboring one under criteria that were never desig
 
 The same pattern of fragmentation is visible — and in some cases far more entrenched — in the digital representation of realities that belong to the universal Church.
 
-| Domain                        | What Is Shared                                                      | What Is Fragmented                                                                  |
-| :---------------------------- | :------------------------------------------------------------------ | :---------------------------------------------------------------------------------- |
-| **Liturgy**                   | The Roman Rite, the General Roman Calendar, proper calendars        | Every app defines its own feast identifiers, calendar logic, and data structures    |
-| **Sacred Scripture**          | The approved texts and editions of the Catholic Bible               | Every platform references editions, books, and verses in its own schema             |
-| **Magisterial Documents**     | Encyclicals, apostolic constitutions, decrees of the Magisterium    | No shared digital identifiers for document types, issuers, or authority levels      |
-| **Canonical Structures**      | Dioceses, parishes, religious institutes, ecclesial movements       | Every database uses its own numbering; no canonical digital directory exists         |
-| **Sacramental Records**       | The Church's sacramental register system                            | Diocesan databases are mutually incompatible; no data exchange standard exists      |
+| Domain                    | What Is Shared                                                   | What Is Fragmented                                                               |
+| :------------------------ | :--------------------------------------------------------------- | :------------------------------------------------------------------------------- |
+| **Liturgy**               | The Roman Rite, the General Roman Calendar, proper calendars     | Every app defines its own feast identifiers, calendar logic, and data structures |
+| **Sacred Scripture**      | The approved texts and editions of the Catholic Bible            | Every platform references editions, books, and verses in its own schema          |
+| **Magisterial Documents** | Encyclicals, apostolic constitutions, decrees of the Magisterium | No shared digital identifiers for document types, issuers, or authority levels   |
+| **Canonical Structures**  | Dioceses, parishes, religious institutes, ecclesial movements    | Every database uses its own numbering; no canonical digital directory exists     |
+| **Sacramental Records**   | The Church's sacramental register system                         | Diocesan databases are mutually incompatible; no data exchange standard exists   |
 
 These are not peripheral concerns. The Liturgy, the Bible, Canon Law, and the Magisterium constitute the shared patrimony of the universal Church. Their digitization is not
 optional — it is already happening, in hundreds of independent projects worldwide. The question is whether that digitization proceeds under shared standards that preserve the

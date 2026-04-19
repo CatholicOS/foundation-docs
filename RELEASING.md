@@ -22,11 +22,11 @@ A single workflow run performs four stages in order:
 
 The following repository secrets and variables must be configured in GitHub:
 
-| Name                | Type     | Purpose                                          |
-| :------------------ | :------- | :----------------------------------------------- |
-| `WP_REST_URL`       | Variable | Base URL of the WordPress REST API               |
-| `WP_APP_USERNAME`   | Secret   | WordPress application password username          |
-| `WP_APP_PASSWORD`   | Secret   | WordPress application password                   |
+| Name              | Type     | Purpose                                 |
+| :---------------- | :------- | :-------------------------------------- |
+| `WP_REST_URL`     | Variable | Base URL of the WordPress REST API      |
+| `WP_APP_USERNAME` | Secret   | WordPress application password username |
+| `WP_APP_PASSWORD` | Secret   | WordPress application password          |
 
 The WordPress site must also expose a custom REST endpoint
 (`cdcf/v1/translate`) that accepts a `source_id` and `target_lang` for the
@@ -124,18 +124,18 @@ the binary is not in the default location.
 
 The following documents are included in builds and deployments:
 
-| Section            | File                                             |
-| :----------------- | :----------------------------------------------- |
-| Project Governance | `project-governance/project-vetting-criteria.md` |
-| Project Governance | `project-governance/lifecycle.md`                |
-| Project Governance | `project-governance/committees.md`               |
-| Project Governance | `project-governance/project-types.md`            |
-| Project Governance | `project-governance/definitions.md`              |
-| Research           | `research/fragmented-catholic-digital-governance.md` |
-| Research           | `research/governance-as-code-catholic-technology.md` |
+| Section            | File                                                        |
+| :----------------- | :---------------------------------------------------------- |
+| Project Governance | `project-governance/project-vetting-criteria.md`            |
+| Project Governance | `project-governance/lifecycle.md`                           |
+| Project Governance | `project-governance/committees.md`                          |
+| Project Governance | `project-governance/project-types.md`                       |
+| Project Governance | `project-governance/definitions.md`                         |
+| Research           | `research/fragmented-catholic-digital-governance.md`        |
+| Research           | `research/governance-as-code-catholic-technology.md`        |
 | Research           | `research/trusted-data-infrastructure-catholic-ministry.md` |
-| Standards          | `standards/overview.md`                          |
-| Standards          | `standards/committees.md`                        |
+| Standards          | `standards/overview.md`                                     |
+| Standards          | `standards/committees.md`                                   |
 
 To add a new document, update the `DOCS` array in all three places:
 

@@ -93,13 +93,13 @@ vulnerable populations. Thousands of parishes hold additional data on the same f
 
 A distinct category of data stewardship concerns the digital representation of realities that belong to the universal Church and are not private data but shared patrimony.
 
-| Domain                    | What Must Be Represented                                                                         | Current State                                                                |
-| :------------------------ | :----------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------- |
-| **Liturgy**               | The General Roman Calendar, proper calendars, feast rankings, seasonal cycles                    | Multiple independent implementations with incompatible identifiers           |
-| **Sacred Scripture**      | Approved editions and translations from the Vulgate through modern vernaculars                   | No shared registry of editions; every application invents its own references |
-| **Magisterial Documents** | Encyclicals, apostolic constitutions, conciliar decrees, dicastery instructions                  | No standard identifier scheme for type, issuer, or authority level           |
-| **Canonical Structures**  | Dioceses, eparchies, parishes, religious institutes, including historical entities                | Every database uses its own numbering; no canonical digital directory exists  |
-| **Sacramental Records**   | Baptism, confirmation, marriage, ordination records maintained across diocesan register systems   | Diocesan databases are mutually incompatible; no data exchange standard      |
+| Domain                    | What Must Be Represented                                                                        | Current State                                                                |
+| :------------------------ | :---------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------- |
+| **Liturgy**               | The General Roman Calendar, proper calendars, feast rankings, seasonal cycles                   | Multiple independent implementations with incompatible identifiers           |
+| **Sacred Scripture**      | Approved editions and translations from the Vulgate through modern vernaculars                  | No shared registry of editions; every application invents its own references |
+| **Magisterial Documents** | Encyclicals, apostolic constitutions, conciliar decrees, dicastery instructions                 | No standard identifier scheme for type, issuer, or authority level           |
+| **Canonical Structures**  | Dioceses, eparchies, parishes, religious institutes, including historical entities              | Every database uses its own numbering; no canonical digital directory exists |
+| **Sacramental Records**   | Baptism, confirmation, marriage, ordination records maintained across diocesan register systems | Diocesan databases are mutually incompatible; no data exchange standard      |
 
 This data does not face privacy constraints — the General Roman Calendar is public, the texts of Sacred Scripture are published, the documents of the Magisterium are freely
 available. What it faces is a standardization deficit. The Church's own understanding of its structures, rites, and traditions has no authoritative digital expression that software
@@ -159,12 +159,12 @@ Trusted data infrastructure — both standardized ecclesial data and synthetic i
 
 ### From synthetic institutional data
 
-| Use Case                  | Data Source                                       | Applications Unlocked                                                                       |
-| :------------------------ | :------------------------------------------------ | :------------------------------------------------------------------------------------------ |
-| **Healthcare**            | Synthetic EHR cohorts across 650 hospitals        | Diagnostic AI, clinical operations, multi-system population research                        |
-| **Education**             | Synthetic student records across 5,905 schools    | Early-warning systems, retention models, system-wide benchmarking                           |
-| **Social Services**       | Synthetic case data across 168 Charities agencies | Program effectiveness, homelessness prediction, neighborhood vulnerability modeling         |
-| **Research Partnerships** | Cross-institutional synthetic cohorts             | NIH studies, public health research, minority population outcomes                           |
+| Use Case                  | Data Source                                       | Applications Unlocked                                                               |
+| :------------------------ | :------------------------------------------------ | :---------------------------------------------------------------------------------- |
+| **Healthcare**            | Synthetic EHR cohorts across 650 hospitals        | Diagnostic AI, clinical operations, multi-system population research                |
+| **Education**             | Synthetic student records across 5,905 schools    | Early-warning systems, retention models, system-wide benchmarking                   |
+| **Social Services**       | Synthetic case data across 168 Charities agencies | Program effectiveness, homelessness prediction, neighborhood vulnerability modeling |
+| **Research Partnerships** | Cross-institutional synthetic cohorts             | NIH studies, public health research, minority population outcomes                   |
 
 Synthetic EHR cohorts across 650 hospitals would enable diagnostic AI development, clinical operations optimization, and multi-system research on population patterns without
 triggering PHI sharing workflows or extended IRB delays.[^1] Catholic hospitals disproportionately serve underrepresented and underserved populations that commercial AI training
@@ -188,12 +188,12 @@ The federated synthetic data framework provides exactly the mechanism needed to 
 
 ### From standardized ecclesial data
 
-| Use Case                       | Data Source                                       | Applications Unlocked                                                                      |
-| :----------------------------- | :------------------------------------------------ | :----------------------------------------------------------------------------------------- |
-| **Liturgical Software**        | Shared CLEDR identifiers for all celebrations     | Interoperable calendar apps, lectionary tools, liturgical planning systems                  |
-| **Scripture Applications**     | Shared registry of Catholic Bible editions        | Cross-reference tools, liturgical reading integration, catechetical platforms               |
-| **Magisterial Research**       | Shared CMDDR identifiers for Church documents     | Citation tools, teaching authority databases, theological research platforms                |
-| **Diocesan Administration**    | Shared identifiers for canonical structures       | Cross-diocesan directories, national reporting, historical research                        |
+| Use Case                    | Data Source                                   | Applications Unlocked                                                         |
+| :-------------------------- | :-------------------------------------------- | :---------------------------------------------------------------------------- |
+| **Liturgical Software**     | Shared CLEDR identifiers for all celebrations | Interoperable calendar apps, lectionary tools, liturgical planning systems    |
+| **Scripture Applications**  | Shared registry of Catholic Bible editions    | Cross-reference tools, liturgical reading integration, catechetical platforms |
+| **Magisterial Research**    | Shared CMDDR identifiers for Church documents | Citation tools, teaching authority databases, theological research platforms  |
+| **Diocesan Administration** | Shared identifiers for canonical structures   | Cross-diocesan directories, national reporting, historical research           |
 
 When Catholic software projects build on shared canonical identifiers rather than inventing their own, interoperability becomes the default rather than the exception. A liturgical
 calendar app can exchange data with a parish management system. A catechetical platform can reference the same Magisterial documents as a theological research tool. A diocesan
@@ -206,9 +206,9 @@ the ecclesial unity of what it represents.
 
 Trusted data infrastructure for Catholic ministry operates across three layers that correspond to institutional capacity levels.
 
-| Layer                   | Function                                                                                                                                                                    | Primary Users                                        | CDCF Role                                                       |
-| :---------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------- | :-------------------------------------------------------------- |
-| **Infrastructure**      | Synthetic data generators, standards validation engines, PHI/PII-sensitive pipeline controls. Handles technical generation, validation, and standards conformance checking. | Large health systems and university research centers | Contributes validation and conformance specifications           |
+| Layer                   | Function                                                                                                                                                                    | Primary Users                                        | CDCF Role                                                      |
+| :---------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------- | :------------------------------------------------------------- |
+| **Infrastructure**      | Synthetic data generators, standards validation engines, PHI/PII-sensitive pipeline controls. Handles technical generation, validation, and standards conformance checking. | Large health systems and university research centers | Contributes validation and conformance specifications          |
 | **Governance Platform** | Catholic-specific governance framework encoding quality validation standards, data stewardship policies, CDCF standards schemas, and access-control patterns.               | Diocesan governance offices and data stewards        | Stewards validation standards, certification criteria, schemas |
 | **Application**         | Ready-made tools: diocesan education dashboards, Charities program evaluation tools, liturgical software using CDCF standard identifiers, parish data integrations.         | Diocesan offices, parishes, small agencies           | Provides certified application templates and standard schemas  |
 
@@ -281,11 +281,11 @@ manifesto describes a "builder commons" dedicated to aggregating, vetting, and c
 directly onto that charter — with the CDCF's role escalating from standard-setting for sensitive data, through interoperability standards for local data, to operational data
 stewardship for the shared patrimony of the universal Church.
 
-| Data Tier                                  | CDCF Role                                                                                                                                        |
-| :----------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tier 1: Sensitive institutional data**   | Defines validation standards and certification criteria for synthetic data generation. Sets fidelity and privacy thresholds. Does not hold data. |
-| **Tier 2: Local institutional data**       | Defines interoperability standards and schema conventions. Does not hold data.                                                                   |
-| **Tier 3: Universal Church data**          | Defines canonical standards, maintains authoritative datasets, and serves the shared baseline with contributed local adaptations.                |
+| Data Tier                                | CDCF Role                                                                                                                                        |
+| :--------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tier 1: Sensitive institutional data** | Defines validation standards and certification criteria for synthetic data generation. Sets fidelity and privacy thresholds. Does not hold data. |
+| **Tier 2: Local institutional data**     | Defines interoperability standards and schema conventions. Does not hold data.                                                                   |
+| **Tier 3: Universal Church data**        | Defines canonical standards, maintains authoritative datasets, and serves the shared baseline with contributed local adaptations.                |
 
 For Tier 1, the CDCF contributes governance expertise: fidelity and privacy thresholds a synthetic dataset must meet for certification, what a synthetic data generation process
 must demonstrate to receive CDCF certification (paralleling the project vetting criteria), and schema conventions that allow synthetic datasets from different institutions to be

@@ -1,10 +1,10 @@
 # CDCF Project Vetting Criteria
 
-|                  |                                                                                                                                  |
-| :--------------- | :------------------------------------------------------------------------------------------------------------------------------- |
-| **Version**      | v0.2 (draft for community review)                                                                                                |
-| **Scope**        | All technology projects submitted for CDCF incubation and graduation                                                             |
-| **Note**         | Domain-specific extensions (beginning with AI) are integrated inline. Additional domains may be added as the Foundation evolves. |
+|             |                                                                                                                                  |
+| :---------- | :------------------------------------------------------------------------------------------------------------------------------- |
+| **Version** | v0.2 (draft for community review)                                                                                                |
+| **Scope**   | All technology projects submitted for CDCF incubation and graduation                                                             |
+| **Note**    | Domain-specific extensions (beginning with AI) are integrated inline. Additional domains may be added as the Foundation evolves. |
 
 ---
 
@@ -194,11 +194,11 @@ sound in isolation and one that is responsibly deployed in an institutional cont
 
 **Required elements:**
 
-| Element                  | Description                                                               |
-| ------------------------ | ------------------------------------------------------------------------- |
-| Decision authority level | Parish, diocese, institution, or board; clearly mapped                    |
-| Escalation conditions    | Defined triggers requiring higher authority involvement                   |
-| Human review triggers    | Thresholds at which outputs require human examination before action       |
+| Element                  | Description                                                                 |
+| ------------------------ | --------------------------------------------------------------------------- |
+| Decision authority level | Parish, diocese, institution, or board; clearly mapped                      |
+| Escalation conditions    | Defined triggers requiring higher authority involvement                     |
+| Human review triggers    | Thresholds at which outputs require human examination before action         |
 | Appeal process           | Process by which affected persons can contest a project-influenced decision |
 
 The canonical grounding for these requirements is specific. Canon 1609 dictates that judges in a collegiate tribunal must submit written conclusions with reasons in law and in
