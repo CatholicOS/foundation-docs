@@ -69,6 +69,19 @@ auto-increment the version tag.
 - Creates or updates the corresponding WordPress page via the REST API,
   organized under parent pages (`project-governance`, `research`, `standards`).
 
+#### Stage 1b -- Stale page cleanup
+
+- Uses `git diff --diff-filter=D` between tags to detect governance `.md`
+  files that were deleted or renamed since the previous release.
+- Derives the WordPress slug for each deleted file (using the same logic as
+  deployment) and trashes the corresponding page.
+- If an entire section directory no longer exists (e.g. `ai-governance/` was
+  removed), the parent page is also trashed.
+- Pages are moved to the WordPress trash (not permanently deleted), so they
+  can be recovered if needed.
+- This step only runs for tag-triggered deploys (not manual dispatch, which
+  has no previous tag to compare against).
+
 #### Stage 2 -- Translation
 
 - Each newly deployed page is translated into **it**, **es**, **fr**, **pt**,

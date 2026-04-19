@@ -72,6 +72,24 @@ jobs:
 
           echo "changed_docs=$CHANGED_DOCS" >> "$GITHUB_OUTPUT"
 
+          # Detect deleted governance documents (stale pages to remove)
+          DELETED_DOCS=""
+          if [ "$DEPLOY_ALL" != true ] && [ -n "$DIFF_BASE" ]; then
+            DELETED=$(git diff --name-only --diff-filter=D "$DIFF_BASE" HEAD 2>/dev/null || echo "")
+            for FILE in $DELETED; do
+              case "$FILE" in
+                # Skip non-governance markdown files
+                README.md|RELEASING.md|CONTRIBUTING.md|CHANGELOG.md|*/README.md) continue ;;
+                */*.md)
+                  DOC="${FILE%.md}"
+                  echo "  Deleted: $FILE"
+                  DELETED_DOCS="${DELETED_DOCS:+$DELETED_DOCS }${DOC}"
+                  ;;
+              esac
+            done
+          fi
+          echo "deleted_docs=$DELETED_DOCS" >> "$GITHUB_OUTPUT"
+
       - name: Install pandoc
         uses: pandoc/actions/setup@v1.1.1
 
@@ -225,6 +243,78 @@ jobs:
 
           echo ""
           echo "All translations complete."
+
+      - name: Remove stale WordPress pages
+        if: steps.changes.outputs.deleted_docs != ''
+        env:
+          WP_REST_URL: ${{ vars.WP_REST_URL }}
+          WP_APP_USERNAME: ${{ secrets.WP_APP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: |
+          STALE_SECTIONS=()
+
+          for DOC in ${{ steps.changes.outputs.deleted_docs }}; do
+            SECTION=$(dirname "$DOC")
+            BASENAME=$(basename "$DOC")
+            if [ "$SECTION" = "standards" ]; then
+              SLUG="standards-${BASENAME}"
+            else
+              SLUG="$BASENAME"
+            fi
+
+            echo "Checking for stale page: ${SLUG}..."
+            EXISTING=$(curl -s \
+              -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+              "$WP_REST_URL/wp/v2/pages?slug=${SLUG}&status=publish,draft")
+
+            PAGE_ID=$(echo "$EXISTING" | jq -r 'if type == "array" then .[0].id // empty else empty end')
+
+            if [ -n "$PAGE_ID" ] && [ "$PAGE_ID" != "null" ]; then
+              echo "  Trashing page ID $PAGE_ID (slug: ${SLUG})..."
+              HTTP_CODE=$(curl -s -o /dev/null -w '%{http_code}' -X DELETE \
+                -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+                "$WP_REST_URL/wp/v2/pages/$PAGE_ID")
+              if [[ "$HTTP_CODE" -lt 300 ]]; then
+                echo "  Trashed."
+              else
+                echo "  Warning: delete returned HTTP $HTTP_CODE"
+              fi
+            else
+              echo "  No WordPress page found — skipping."
+            fi
+
+            # Track sections that had deletions
+            if [[ ! " ${STALE_SECTIONS[*]} " =~ " ${SECTION} " ]]; then
+              STALE_SECTIONS+=("$SECTION")
+            fi
+          done
+
+          # If an entire section directory no longer exists, trash the parent page
+          for SECTION in "${STALE_SECTIONS[@]}"; do
+            if [ ! -d "$SECTION" ]; then
+              echo "Section '${SECTION}' no longer exists — checking for stale parent page..."
+              PARENT=$(curl -s \
+                -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+                "$WP_REST_URL/wp/v2/pages?slug=${SECTION}&status=publish,draft")
+
+              PARENT_ID=$(echo "$PARENT" | jq -r 'if type == "array" then .[0].id // empty else empty end')
+
+              if [ -n "$PARENT_ID" ] && [ "$PARENT_ID" != "null" ]; then
+                echo "  Trashing parent page ID $PARENT_ID (slug: ${SECTION})..."
+                HTTP_CODE=$(curl -s -o /dev/null -w '%{http_code}' -X DELETE \
+                  -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+                  "$WP_REST_URL/wp/v2/pages/$PARENT_ID")
+                if [[ "$HTTP_CODE" -lt 300 ]]; then
+                  echo "  Trashed."
+                else
+                  echo "  Warning: delete returned HTTP $HTTP_CODE"
+                fi
+              fi
+            fi
+          done
+
+          echo ""
+          echo "Stale page cleanup complete."
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
