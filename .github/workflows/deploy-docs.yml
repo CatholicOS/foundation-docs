@@ -122,6 +122,25 @@ jobs:
             ["standards"]="standards"
           )
 
+          # Display titles for section parent pages (used when auto-creating)
+          declare -A SECTION_TITLES=(
+            ["project-governance"]="Project Governance"
+            ["research"]="Research"
+            ["standards"]="Standards"
+          )
+
+          # Resolve the top-level "governance" page ID (grandparent of all sections)
+          GOV_PAGE=$(curl -s \
+            -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+            "$WP_REST_URL/wp/v2/pages?slug=governance&status=publish,draft")
+          GOV_ID=$(echo "$GOV_PAGE" | jq -r 'if type == "array" then .[0].id // empty else empty end')
+          if [ -z "$GOV_ID" ] || [ "$GOV_ID" = "null" ]; then
+            GOV_ID=0
+            echo "Warning: top-level 'governance' page not found."
+          else
+            echo "Resolved top-level 'governance' page (ID: $GOV_ID)"
+          fi
+
           # Cache resolved parent page IDs
           declare -A PARENT_IDS
 
@@ -145,7 +164,7 @@ jobs:
 
             HTML_CONTENT=$(cat "${SLUG}.html")
 
-            # Resolve parent page ID (cached per section)
+            # Resolve parent page ID (cached per section); create if missing
             if [ -z "${PARENT_IDS[$PARENT_SLUG]+x}" ]; then
               PARENT_PAGE=$(curl -s \
                 -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
@@ -155,8 +174,29 @@ jobs:
                 PARENT_IDS[$PARENT_SLUG]="$PID"
                 echo "  Resolved parent '${PARENT_SLUG}' (ID: $PID)"
               else
-                PARENT_IDS[$PARENT_SLUG]="0"
-                echo "  Warning: parent page '${PARENT_SLUG}' not found — publishing without parent."
+                # Auto-create the section parent page under "governance"
+                SECTION_TITLE="${SECTION_TITLES[$SECTION]:-$PARENT_SLUG}"
+                echo "  Parent '${PARENT_SLUG}' not found — creating..."
+                PARENT_PAYLOAD=$(jq -n \
+                  --arg title "$SECTION_TITLE" \
+                  --arg slug "$PARENT_SLUG" \
+                  --argjson parent "$GOV_ID" \
+                  --arg template "governance-toc" \
+                  '{title: $title, slug: $slug, content: "", parent: $parent, status: "publish", template: $template}')
+                PARENT_RESPONSE=$(curl -s -X POST \
+                  -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+                  -H "Content-Type: application/json" \
+                  -d "$PARENT_PAYLOAD" \
+                  "$WP_REST_URL/wp/v2/pages")
+                PID=$(echo "$PARENT_RESPONSE" | jq -r '.id // empty')
+                if [ -n "$PID" ] && [ "$PID" != "null" ]; then
+                  PARENT_IDS[$PARENT_SLUG]="$PID"
+                  echo "  Created parent '${PARENT_SLUG}' (ID: $PID)"
+                else
+                  PARENT_IDS[$PARENT_SLUG]="0"
+                  echo "  Warning: failed to create parent '${PARENT_SLUG}'."
+                  echo "  Response: $PARENT_RESPONSE"
+                fi
               fi
             fi
             PARENT_ID="${PARENT_IDS[$PARENT_SLUG]}"

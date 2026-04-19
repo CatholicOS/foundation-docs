@@ -68,6 +68,9 @@ auto-increment the version tag.
   `.md` links for the target output format).
 - Creates or updates the corresponding WordPress page via the REST API,
   organized under parent pages (`project-governance`, `research`, `standards`).
+- If a section parent page does not yet exist in WordPress, it is
+  automatically created as a child of the top-level `governance` page with
+  the "Governance TOC" template.
 
 #### Stage 1b -- Stale page cleanup
 
