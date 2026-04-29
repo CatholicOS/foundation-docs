@@ -252,14 +252,22 @@ jobs:
 
       - name: Translate deployed pages
         if: steps.deploy.outputs.deployed_ids != ''
+        id: translate
         env:
           WP_REST_URL: ${{ vars.WP_REST_URL }}
           WP_APP_USERNAME: ${{ secrets.WP_APP_USERNAME }}
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          DEPLOYED_IDS: ${{ steps.deploy.outputs.deployed_ids }}
         run: |
-          DEPLOYED_IDS="${{ steps.deploy.outputs.deployed_ids }}"
           TARGET_LANGS=("it" "es" "fr" "pt" "de")
 
+          # Capture the moment we start enqueueing so the verify step can
+          # confirm each translation post's modified_gmt advanced past it.
+          DEPLOY_START_GMT=$(date -u +'%Y-%m-%dT%H:%M:%S')
+          echo "deploy_start_gmt=${DEPLOY_START_GMT}" >> "$GITHUB_OUTPUT"
+          echo "Deploy start (UTC): $DEPLOY_START_GMT"
+
+          TRANSLATED_IDS=""
           for PAGE_ID in $DEPLOYED_IDS; do
             echo "Translating page ID $PAGE_ID..."
             for LANG in "${TARGET_LANGS[@]}"; do
@@ -274,15 +282,80 @@ jobs:
 
               if [ -n "$TRANSLATED_ID" ]; then
                 echo "  ${LANG}: page ID ${TRANSLATED_ID} -- ${MESSAGE}"
+                TRANSLATED_IDS="${TRANSLATED_IDS:+$TRANSLATED_IDS }${TRANSLATED_ID}"
               else
-                echo "  ${LANG}: translation failed"
+                echo "  ${LANG}: translation enqueue failed"
                 echo "  Response: $RESPONSE"
               fi
             done
           done
 
+          echo "translated_ids=$TRANSLATED_IDS" >> "$GITHUB_OUTPUT"
           echo ""
-          echo "All translations complete."
+          echo "All translations enqueued."
+
+      - name: Verify translations completed
+        if: steps.translate.outputs.translated_ids != ''
+        env:
+          WP_REST_URL: ${{ vars.WP_REST_URL }}
+          WP_APP_USERNAME: ${{ secrets.WP_APP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          DEPLOY_START_GMT: ${{ steps.translate.outputs.deploy_start_gmt }}
+          TRANSLATED_IDS: ${{ steps.translate.outputs.translated_ids }}
+        run: |
+          # Poll each translation page's modified_gmt until it advances past
+          # DEPLOY_START_GMT. The /translate endpoint is fire-and-forget, so
+          # without this step a silent worker failure (OpenAI timeout, missing
+          # API key, dead Redis worker) lets the deploy report success while
+          # leaving translations stale.
+          MAX_ATTEMPTS=20      # 20 x 30s = 10 minutes
+          SLEEP_SECONDS=30
+
+          declare -A PENDING
+          for ID in $TRANSLATED_IDS; do PENDING[$ID]=1; done
+
+          for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
+            REMAINING=()
+            for ID in "${!PENDING[@]}"; do
+              RESPONSE=$(curl -s \
+                -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
+                "$WP_REST_URL/wp/v2/pages/${ID}?_fields=id,modified_gmt,status&context=edit")
+              MODIFIED=$(echo "$RESPONSE" | jq -r '.modified_gmt // empty')
+              STATUS=$(echo "$RESPONSE" | jq -r '.status // empty')
+
+              # modified_gmt is ISO 8601 with no offset; lexicographic compare
+              # against DEPLOY_START_GMT (also UTC, no offset) is correct.
+              if [ -n "$MODIFIED" ] && [[ "$MODIFIED" > "$DEPLOY_START_GMT" ]]; then
+                echo "  page ${ID} translated (modified_gmt=${MODIFIED}, status=${STATUS})"
+              else
+                REMAINING+=("$ID")
+              fi
+            done
+
+            unset PENDING
+            declare -A PENDING
+            for ID in "${REMAINING[@]:-}"; do
+              [ -n "$ID" ] && PENDING[$ID]=1
+            done
+
+            if [ "${#PENDING[@]}" -eq 0 ]; then
+              echo "All translations completed."
+              exit 0
+            fi
+
+            echo "Attempt ${attempt}/${MAX_ATTEMPTS}: ${#PENDING[@]} pending - sleeping ${SLEEP_SECONDS}s..."
+            sleep "$SLEEP_SECONDS"
+          done
+
+          echo ""
+          echo "ERROR: the following translation posts did not update within $((MAX_ATTEMPTS * SLEEP_SECONDS))s of deploy start:"
+          for ID in "${!PENDING[@]}"; do
+            echo "  - page ID ${ID}"
+          done
+          echo ""
+          echo "Likely causes: OpenAI timeout/error, Redis Queue worker not running,"
+          echo "or missing/invalid cdcf_openai_api_key. Check WordPress error_log."
+          exit 1
 
       - name: Remove stale WordPress pages
         if: steps.changes.outputs.deleted_docs != ''
