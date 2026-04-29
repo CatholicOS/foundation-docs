@@ -308,20 +308,26 @@ jobs:
           # without this step a silent worker failure (OpenAI timeout, missing
           # API key, dead Redis worker) lets the deploy report success while
           # leaving translations stale.
-          MAX_ATTEMPTS=20      # 20 x 30s = 10 minutes
+          MAX_ATTEMPTS=60      # 60 x 30s = 30 minutes
           SLEEP_SECONDS=30
 
           declare -A PENDING
           for ID in $TRANSLATED_IDS; do PENDING[$ID]=1; done
+          INITIAL_COUNT=${#PENDING[@]}
 
           for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
             REMAINING=()
             for ID in "${!PENDING[@]}"; do
-              RESPONSE=$(curl -s \
+              # `|| echo '{}'` keeps `set -e` from killing the whole step on
+              # transient curl failures (we observed exit 56 / CURLE_RECV_ERROR
+              # mid-poll). `--retry` handles short network blips at the curl
+              # layer; the `|| echo` is the safety net for everything else.
+              RESPONSE=$(curl -s --max-time 15 --retry 3 --retry-delay 5 --retry-all-errors \
                 -u "$WP_APP_USERNAME:$WP_APP_PASSWORD" \
-                "$WP_REST_URL/wp/v2/pages/${ID}?_fields=id,modified_gmt,status&context=edit")
-              MODIFIED=$(echo "$RESPONSE" | jq -r '.modified_gmt // empty')
-              STATUS=$(echo "$RESPONSE" | jq -r '.status // empty')
+                "$WP_REST_URL/wp/v2/pages/${ID}?_fields=id,modified_gmt,status&context=edit" \
+                || echo '{}')
+              MODIFIED=$(echo "$RESPONSE" | jq -r '.modified_gmt // empty' 2>/dev/null || echo "")
+              STATUS=$(echo "$RESPONSE" | jq -r '.status // empty' 2>/dev/null || echo "")
 
               # modified_gmt is ISO 8601 with no offset; lexicographic compare
               # against DEPLOY_START_GMT (also UTC, no offset) is correct.
@@ -343,7 +349,8 @@ jobs:
               exit 0
             fi
 
-            echo "Attempt ${attempt}/${MAX_ATTEMPTS}: ${#PENDING[@]} pending - sleeping ${SLEEP_SECONDS}s..."
+            COMPLETED=$((INITIAL_COUNT - ${#PENDING[@]}))
+            echo "Attempt ${attempt}/${MAX_ATTEMPTS}: ${COMPLETED}/${INITIAL_COUNT} done, ${#PENDING[@]} pending - sleeping ${SLEEP_SECONDS}s..."
             sleep "$SLEEP_SECONDS"
           done
 
