@@ -21,6 +21,6 @@
     "lint-staged": "^15.5.1",
     "markdownlint-cli2": "^0.22.0",
     "pagedjs-cli": "^0.4.3",
-    "prettier": "^3.5.3"
+    "prettier": "^3.8.3"
   }
 }
