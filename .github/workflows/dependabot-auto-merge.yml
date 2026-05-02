@@ -22,7 +22,8 @@ jobs:
 
       - name: Auto-merge non-major updates
         if: steps.metadata.outputs.update-type != 'version-update:semver-major'
-        run: gh pr merge "$PR_URL" --auto --squash
+        # Repo policy permits merge commits only (allow_squash_merge / allow_rebase_merge are off).
+        run: gh pr merge "$PR_URL" --auto --merge
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
