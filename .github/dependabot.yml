@@ -1,4 +1,12 @@
 version: 2
+
+# Action pin policy: workflows in this repo MUST reference third-party actions
+# by commit SHA with a trailing version comment, e.g.
+#   uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+# Dependabot detects that format and rewrites both the SHA and the comment
+# when a new release ships, keeping the pin intact. Tag-only pins (`@v6`) are
+# mutable and silently widen the trust surface — do not introduce them.
+
 updates:
   - package-ecosystem: npm
     directory: /
@@ -9,6 +17,11 @@ updates:
     labels:
       - dependencies
     open-pull-requests-limit: 10
+    groups:
+      npm-minor-and-patch:
+        update-types:
+          - minor
+          - patch
 
   - package-ecosystem: github-actions
     directory: /
@@ -20,3 +33,8 @@ updates:
       - dependencies
       - github-actions
     open-pull-requests-limit: 10
+    groups:
+      actions-minor-and-patch:
+        update-types:
+          - minor
+          - patch
