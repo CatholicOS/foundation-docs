@@ -21,7 +21,7 @@
     "lint-staged": "^17.0.7",
     "markdownlint-cli2": "^0.22.1",
     "pagedjs-cli": "^0.4.3",
-    "prettier": "^3.8.3"
+    "prettier": "^3.8.4"
   },
   "overrides": {
     "tar-fs": "^3.1.2",
