@@ -3,7 +3,7 @@ name: "🚀 AI Project Formation Intake"
 about: "Initiate the formation pathway for an open-source AI project or dataset."
 title: "[AI INTAKE]: <Project Name>"
 labels: ["formation-pathway", "ai-domain"]
-assignees: ["mj3b"]
+assignees: ["mj3b", "JohnRDOrazio", "matthewa26"]
 ---
 
 ## 🏗️ Project Overview
