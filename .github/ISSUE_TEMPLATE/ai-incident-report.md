@@ -3,7 +3,7 @@ name: "🚨 AI Incident & Anomaly Report"
 about: "Report a behavioral deviation, doctrinal error, or data breach in an active CDCF AI tool."
 title: "[AI INCIDENT]: <Tool Name> - <Short Description>"
 labels: ["incident-response", "triage-pending"]
-assignees: ["mj3b"]
+assignees: ["mj3b", "JohnRDOrazio", "matthewa26"]
 ---
 
 ## 🛑 Critical Notice
