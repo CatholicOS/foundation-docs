@@ -19,9 +19,9 @@
   "devDependencies": {
     "husky": "^9.1.7",
     "lint-staged": "^17.0.8",
-    "markdownlint-cli2": "^0.22.1",
+    "markdownlint-cli2": "^0.23.0",
     "pagedjs-cli": "^0.4.3",
-    "prettier": "^3.8.4"
+    "prettier": "^3.9.4"
   },
   "overrides": {
     "tar-fs": "^3.1.2",
