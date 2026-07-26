@@ -3,7 +3,7 @@
 |                   |                                                                                                                                                                                                                                                                   |
 | :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Document type** | Position paper — public comment                                                                                                                                                                                                                                   |
-| **Status**        | Draft 3 — prepared for submission during the `draft-cdcf-catholic-uri-scheme-03` (v0.4.0) 60-day comment window                                                                                                                                                   |
+| **Status**        | Draft 4 — prepared for submission during the `draft-cdcf-catholic-uri-scheme-03` (v0.4.0) 60-day comment window                                                                                                                                                   |
 | **Relationship**  | Responds to [draft-cdcf-identifier-rationale-00](../standards/drafts/cdcf-identifier-rationale-00.md) and [draft-cdcf-catholic-uri-scheme-03](../standards/drafts/cdcf-catholic-uri-scheme-03.md); informs the [CDCF Standards program](../standards/overview.md) |
 | **License**       | CC BY 4.0                                                                                                                                                                                                                                                         |
 
@@ -46,6 +46,13 @@
 - **The divergence is already recorded,** inside CDCF's and CatholicOS's own repositories: one verse now carries three committee-minted transparent identifiers in eight months,
   shipped registry IDs have been renamed in place, and a calendar-date anchor baked into an identifier moved because the Latin and Italian editions of one book disagree about the
   date.
+  - **The consequence lands downstream.** Had any Catholic system already put those identifiers into production — a diocesan database, a liturgical app, a publisher's citation
+    layer — one of exactly two things happens.
+  - **The system breaks.** The identifier it stored changed underneath it, so the citation, the query, or the join simply stops resolving.
+  - **Or the system drifts.** It keeps running against an identifier the registry has abandoned, quietly serving a date, a name, or a spelling that is no longer the standard's
+    answer — the worse failure, because nothing reports it.
+  - **And that is fatal for a nascent standard.** Across six registries and a corpus this size it is bound to happen thousands of times, and each occurrence buys a sentence an
+    adopter says on the way out: _I tried the CDCF standard, but the IDs kept changing_ — or _I tried the CDCF standard, but it favored one language and phrasing over mine._
 - **The pressure never ends.** Popes keep being elected, dioceses keep merging, decrees keep expanding memorials, editions keep being revised. Every one of those events asks a
   transparent identifier to change something it promised never to change.
 
@@ -109,10 +116,12 @@ Content-Type: application/ld+json
 `notations` is 0.4.0's field as written (§5.9), carrying every hand-authored key the entity has ever been given — here the English, Latin, and Greek slugs, none of them privileged
 in the identifier and none of them lost; the language-tagged `prefLabel`/`altLabel` are the one addition the proposal asks for (commitment 3, amendment to §5.9).
 
-**Editor, IDE, and AI agent.** The call site a developer or an agent actually reads — a named constant, with the label supplied by the tooling.
+**Editor, IDE, and AI agent.** The call site a developer or an agent actually reads — keyed either way, by the human-readable constant or by the canonical ID, because the
+tooling supplies whichever half the code does not carry; the reader sees both at once, the human-explainable name _and_ the durable machine name.
 
 ```text
-if (concept === IDs.GOD_THE_SON) {  // = "Rh895F…" · hover: God the Son
+if (concept === IDs.GOD_THE_SON) {      // = "Rh895FOUgLMfrylaO713w1" · hover: God the Son
+if (concept === IDs.Rh895FOUgLMfrylaO713w1) {  // = GOD_THE_SON · hover: God the Son
 ```
 
 That last surface is not aspirational: ontokit renders exactly this today, resolving a full IRI to its label in a Monaco hover and label-joining API responses beside machine-readable
@@ -206,7 +215,7 @@ privileged — and the divergence would have been visible as what it is: six cit
 `mr:0308-vincentius-kadlubek` and nine siblings), stating the policy: "IDs are drafts pending committee review, so renamed in place with no deprecated-alias." Most instructive is
 the moved anchor — `mr:1210-marcus-antonius-durando` became `mr:0610-marcus-antonius-durando`, because the Latin _editio altera_ 2004 places the blessed on June 10 while the
 Italian (CEI) edition of the same book places him on December 10.[^4] The identifier hard-codes a fact that two editions of one work disagree about, so it must move whenever the
-anchor edition is reconsidered.
+anchor edition is reconsidered — and any downstream system already holding the old anchor breaks or drifts, as the executive summary notes.
 
 **CLEDR**'s crosswalk records the same phenomenon across projects. On 26 January 2021 the Congregation for Divine Worship decreed that 29 July be designated the Memorial of Saints
 Martha, Mary and Lazarus, replacing the celebration of Martha alone.[^7] CLEDR's row carries the Latin title _Sanctorum Marthæ, Mariæ et Lazari_ — and three irreconcilable keys:
