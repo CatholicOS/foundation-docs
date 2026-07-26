@@ -48,9 +48,9 @@
   date.
   - **The consequence lands downstream.** Had any Catholic system already put those identifiers into production — a diocesan database, a liturgical app, a publisher's citation
     layer — one of exactly two things happens.
-  - **The system breaks.** The identifier it stored changed underneath it, so the citation, the query, or the join simply stops resolving.
-  - **Or the system drifts.** It keeps running against an identifier the registry has abandoned, quietly serving a date, a name, or a spelling that is no longer the standard's
-    answer — the worse failure, because nothing reports it.
+    - **The system breaks.** The identifier it stored changed underneath it, so the citation, the query, or the join simply stops resolving.
+    - **Or the system drifts.** It keeps running against an identifier the registry has abandoned, quietly serving a date, a name, or a spelling that is no longer the standard's
+      answer — the worse failure, because nothing reports it.
   - **And that is fatal for a nascent standard.** Across six registries and a corpus this size it is bound to happen thousands of times, and each occurrence buys a sentence an
     adopter says on the way out: _I tried the CDCF standard, but the IDs kept changing_ — or _I tried the CDCF standard, but it favored one language and phrasing over mine._
 - **The pressure never ends.** Popes keep being elected, dioceses keep merging, decrees keep expanding memorials, editions keep being revised. Every one of those events asks a
