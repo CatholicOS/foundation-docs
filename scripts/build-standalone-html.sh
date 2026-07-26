@@ -16,7 +16,7 @@ DOCS=(
   "research/fragmented-catholic-digital-governance.md|fragmented-catholic-digital-governance|Fragmented Catholic Digital Governance"
   "research/governance-as-code-catholic-technology.md|governance-as-code-catholic-technology|Governance-as-Code for Catholic Technology"
   "research/trusted-data-infrastructure-catholic-ministry.md|trusted-data-infrastructure-catholic-ministry|Trusted Data Infrastructure for Catholic Ministry"
-  "research/identifier-durability-opaque-canonical-iris.md|identifier-durability-opaque-canonical-iris|Identifier Durability and Opaque Canonical IRIs"
+  "research/identifier-durability-opaque-canonical-iris.md|identifier-durability-opaque-canonical-iris|Identifier Durability: Machine-Readable Canonical IRIs"
   "standards/overview.md|standards-overview|CDCF Standards Overview"
   "standards/committees.md|standards-committees|CDCF Standards Committees"
 )

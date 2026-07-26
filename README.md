@@ -49,12 +49,12 @@ The core frameworks for any project seeking CDCF endorsement.
 
 Supplementary research memos informing the design of the vetting criteria.
 
-| Document                                                                                                        | Type          | Description                                                                                                          |
-| :-------------------------------------------------------------------------------------------------------------- | :------------ | :------------------------------------------------------------------------------------------------------------------- |
-| [fragmented-catholic-digital-governance.md](./research/fragmented-catholic-digital-governance.md)               | Research memo | The urgency of shared digital governance standards.                                                                  |
-| [governance-as-code-catholic-technology.md](./research/governance-as-code-catholic-technology.md)               | Research memo | Machine-enforceable deployment governance architecture.                                                              |
-| [trusted-data-infrastructure-catholic-ministry.md](./research/trusted-data-infrastructure-catholic-ministry.md) | Research memo | Trusted data infrastructure for Catholic ministry.                                                                   |
-| [identifier-durability-opaque-canonical-iris.md](./research/identifier-durability-opaque-canonical-iris.md)     | Research memo | Position paper: opaque canonical IRIs with human-readable affordances — public comment on the CDCF URI-scheme draft. |
+| Document                                                                                                        | Type          | Description                                                                                                                                                                   |
+| :-------------------------------------------------------------------------------------------------------------- | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fragmented-catholic-digital-governance.md](./research/fragmented-catholic-digital-governance.md)               | Research memo | The urgency of shared digital governance standards.                                                                                                                           |
+| [governance-as-code-catholic-technology.md](./research/governance-as-code-catholic-technology.md)               | Research memo | Machine-enforceable deployment governance architecture.                                                                                                                       |
+| [trusted-data-infrastructure-catholic-ministry.md](./research/trusted-data-infrastructure-catholic-ministry.md) | Research memo | Trusted data infrastructure for Catholic ministry.                                                                                                                            |
+| [identifier-durability-opaque-canonical-iris.md](./research/identifier-durability-opaque-canonical-iris.md)     | Research memo | Identifier Durability: Machine-Readable Canonical IRIs — machine-readable canonical IRIs with a guaranteed human-readable layer; public comment on the CDCF URI-scheme draft. |
 
 ---
 

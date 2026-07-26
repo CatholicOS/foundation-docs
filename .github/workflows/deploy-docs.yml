@@ -107,7 +107,7 @@ jobs:
             ["research/fragmented-catholic-digital-governance"]="Fragmented Catholic Digital Governance at Scale"
             ["research/governance-as-code-catholic-technology"]="Governance-as-Code for Catholic Technology Deployment"
             ["research/trusted-data-infrastructure-catholic-ministry"]="Trusted Data Infrastructure for Catholic Ministry"
-            ["research/identifier-durability-opaque-canonical-iris"]="Identifier Durability and Opaque Canonical IRIs"
+            ["research/identifier-durability-opaque-canonical-iris"]="Identifier Durability: Machine-Readable Canonical IRIs"
             ["project-governance/definitions"]="CDCF Governance Definitions"
             ["project-governance/project-types"]="CDCF Project Types: Foundation Projects and Community Projects"
             ["project-governance/lifecycle"]="CDCF Project Lifecycle"
