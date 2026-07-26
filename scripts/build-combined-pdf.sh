@@ -18,6 +18,7 @@ DOCS=(
   "research/fragmented-catholic-digital-governance.md"
   "research/governance-as-code-catholic-technology.md"
   "research/trusted-data-infrastructure-catholic-ministry.md"
+  "research/identifier-durability-opaque-canonical-iris.md"
   # Standards
   "standards/overview.md"
   "standards/committees.md"
