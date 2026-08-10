@@ -1,0 +1,618 @@
+# Identifier Durability: Machine-Readable Canonical IRIs
+
+|                   |                                                                                                                                                                                                                                                                   |
+| :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Document type** | Position paper — public comment                                                                                                                                                                                                                                   |
+| **Status**        | Draft 4 — prepared for submission during the `draft-cdcf-catholic-uri-scheme-03` (v0.4.0) 60-day comment window                                                                                                                                                   |
+| **Relationship**  | Responds to [draft-cdcf-identifier-rationale-00](../standards/drafts/cdcf-identifier-rationale-00.md) and [draft-cdcf-catholic-uri-scheme-03](../standards/drafts/cdcf-catholic-uri-scheme-03.md); informs the [CDCF Standards program](../standards/overview.md) |
+| **License**       | CC BY 4.0                                                                                                                                                                                                                                                         |
+
+---
+
+## Table of Contents
+
+1. [Executive Summary](#executive-summary)
+2. [The Shared Premise](#the-shared-premise)
+3. [Where the Proposal Agrees with the Rationale Doc](#where-the-proposal-agrees-with-the-rationale-doc)
+4. [The Evidence: Transparency Produced Divergence, Not Convergence](#the-evidence-transparency-produced-divergence-not-convergence)
+5. [Where Does the Churn Land](#where-does-the-churn-land)
+6. [Worked Example: Canonicalizing Levels of Authority](#worked-example-canonicalizing-levels-of-authority)
+7. [The Proposal](#the-proposal)
+8. [Universal Slugs Across Standards](#universal-slugs-across-standards)
+9. [Costs the Proposal Accepts — and Their Remedies](#costs-the-proposal-accepts--and-their-remedies)
+10. [Objections at Full Strength — and Their Remedies](#objections-at-full-strength--and-their-remedies)
+11. [Recommended Amendments to Draft 0.4.0](#recommended-amendments-to-draft-040)
+12. [Bibliography](#bibliography)
+
+---
+
+## Executive Summary
+
+**Goals — the ground already shared.** The ambition behind CDCF is not a Catholic filing system.
+
+- **A ladder, not a registry.** One common taxonomy and ontology every Catholic can use; then one every Christian can use; then one the Abrahamic traditions can share wherever
+  they genuinely refer to the same thing; and ultimately a machine-readable articulation of what those traditions hold to be true, usable by AI systems generally as
+  alignment-with-human-values infrastructure.
+- **The ladder is the test.** A scheme that cannot survive the second rung will never reach the fourth, which is why the identifier question matters at all.
+- **Two jobs, both required.** The standard owes its adopters a name that never moves _and_ a record every reader can interpret in their own language. Nothing below trades one
+  away for the other.
+
+**Problems — names and structures are exactly where traditions diverge.**
+
+- **The Church is 24 churches _sui iuris_,** one Latin and 23 Eastern, and draft 0.4.0 already requires that each "MUST be representable without privileging the Latin Church as
+  the default" (§4.7.1). An identifier that hard-codes a Latin-rite taxonomy segment, or an English slug, or an Italian one, quietly violates that requirement in every string it
+  mints — and the problem sharpens as the ladder extends. To an Eastern Orthodox adopter, an identifier reading `institution/circumscription/…` in Latin-derived English is not
+  neutral infrastructure; it reads as _the Latin thing, not ours_.
+- **The divergence is already recorded,** inside CDCF's and CatholicOS's own repositories: one verse now carries three committee-minted transparent identifiers in eight months,
+  shipped registry IDs have been renamed in place, and a calendar-date anchor baked into an identifier moved because the Latin and Italian editions of one book disagree about the
+  date.
+  - **The consequence lands downstream.** Had any Catholic system already put those identifiers into production — a diocesan database, a liturgical app, a publisher's citation
+    layer — one of exactly two things happens.
+    - **The system breaks.** The identifier it stored changed underneath it, so the citation, the query, or the join simply stops resolving.
+    - **Or the system drifts.** It keeps running against an identifier the registry has abandoned, quietly serving a date, a name, or a spelling that is no longer the standard's
+      answer — the worse failure, because nothing reports it.
+  - **And that is fatal for a nascent standard.** Across six registries and a corpus this size it is bound to happen thousands of times, and each occurrence buys a sentence an
+    adopter says on the way out: _I tried the CDCF standard, but the IDs kept changing_ — or _I tried the CDCF standard, but it favored one language and phrasing over mine._
+- **The pressure never ends.** Popes keep being elected, dioceses keep merging, decrees keep expanding memorials, editions keep being revised. Every one of those events asks a
+  transparent identifier to change something it promised never to change.
+
+**Solution — a machine-readable spine _and_ a guaranteed human-readable layer.**
+
+- **Canonical identifiers become machine-readable** — in the literature's term, _opaque_ — durable precisely because they assert nothing: a base62-encoded UUID of the shape `R…`,
+  minted once for every entity CatholicOS names, ontology and data registries alike.
+- **All human readability moves into a layer the standard guarantees** rather than one the identifier improvises: every existing slug and registry key preserved as a **permanent
+  resolvable alias**, never deprecated and never reused; **multilingual labels** on every entity, so naming disputes are settled by _adding_ a label rather than _changing_ an
+  identifier; and a **rendering rule** requiring production surfaces to show a label beside every canonical ID.
+- **The frame is "and," not "or"** (the classical Catholic _et-et_: both together, not one at the other's expense). The question is not identifier stability _or_ human
+  interpretability. It is both — each carried in the layer built for it, the stable identifier canonical and the human-readable layer guaranteed rather than optional.
+- **A small delta, not a rival document.** Draft 0.4.0 already provides the machinery — the two-artifact model (§3.6), the `notations` array (§5.9), the never-reassign stability
+  guarantee (§3.4), the `exact-match`/`close-match` relations (§4.8.2). The proposal keeps all of it and inverts which artifact is primary.
+
+**What it looks like in practice — four surfaces, one canonical ID.** In every case the canonical machine-readable IRI _is_ the code, and every human-readable rendering rides
+beside it as a comment or a quoted label value.
+
+**Ontology source.** The Turtle a modeller edits — the identifier carries no language, the labels carry every language.
+
+```turtle
+osc:Rh895FOUgLMfrylaO713w1  # "God the Son"@en · "Fílius Dei"@la · "Dio Figlio"@it
+    skos:prefLabel  "God the Son"@en , "Fílius Dei"@la , "Dio Figlio"@it ;
+    skos:altLabel   "the Word"@en , "Verbum"@la , "Lógos"@grc .
+```
+
+**Registry source file.** The row a canonist reviews — plain text, ID and label side by side, with the familiar slug preserved forever.
+
+```text
+id:        Rh895FOUgLMfrylaO713w1   # canonical — minted once, never re-minted
+alias:     god-the-son              # permanent — resolves forever, never reused
+labels:    "Fílius Dei"@la ·
+           "Dio Figlio"@it ·
+           "God the Son"@en
+altLabels: "Lógos"@grc
+```
+
+**Production resolution.** The response an application receives — one request, the reader's own language, every legacy key still on the record.
+
+```http
+GET /Rh895FOUgLMfrylaO713w1 HTTP/1.1
+Host: id.catholiccommons.org
+Accept: application/ld+json
+Accept-Language: it
+
+HTTP/1.1 200 OK
+Content-Type: application/ld+json
+
+{
+  "@id": "Rh895FOUgLMfrylaO713w1",
+  "prefLabel": "Dio Figlio",
+  "altLabel": ["Fílius Dei", "God the Son", "Lógos"],
+  "notations": [
+    { "value": "god-the-son", "scheme": "cdcf:scheme/osc", "prefLabel": true },
+    { "value": "filius-dei", "scheme": "cdcf:scheme/osc-la" },
+    { "value": "logos", "scheme": "cdcf:scheme/osc-grc" }
+  ]
+}
+```
+
+`notations` is 0.4.0's field as written (§5.9), carrying every hand-authored key the entity has ever been given — here the English, Latin, and Greek slugs, none of them privileged
+in the identifier and none of them lost; the language-tagged `prefLabel`/`altLabel` are the one addition the proposal asks for (commitment 3, amendment to §5.9).
+
+**Editor, IDE, and AI agent.** The call site a developer or an agent actually reads — keyed either way, by the human-readable constant or by the canonical ID, because the
+tooling supplies whichever half the code does not carry; the reader sees both at once, the human-explainable name _and_ the durable machine name.
+
+```text
+if (concept === IDs.GOD_THE_SON) {      // = "Rh895FOUgLMfrylaO713w1" · hover: God the Son
+if (concept === IDs.Rh895FOUgLMfrylaO713w1) {  // = GOD_THE_SON · hover: God the Son
+```
+
+That last surface is not aspirational: ontokit renders exactly this today, resolving a full IRI to its label in a Monaco hover and label-joining API responses beside machine-readable
+`osc:` R-IDs.[^15]
+
+**Proposal preview — five commitments (§7).**
+
+- **1 — Canonical identifiers are machine-readable, `R`-shaped, and org-wide,** across the ontology and every data registry.
+- **2 — Every existing slug, key, and registry prefix becomes a permanent resolvable alias,** carried as a 0.4.0 `notation`, never deprecated and never reused.
+- **3 — Every entity carries multilingual labels,** `skos:prefLabel` and `skos:altLabel`, so a naming dispute is settled by adding a label.
+- **4 — Production surfaces MUST render a label beside every canonical ID** — source files, serializations, UIs, and generated code alike.
+- **5 — Structural and volatile facts live in properties, never in canonical identifiers** — dates, country codes, supertypes, edition years, hierarchy, and language.
+
+---
+
+## The Shared Premise
+
+This paper begins where the committee itself began. Asked whether CDCF is meant to become the meta-level disambiguation layer for Catholic data — "kinda like what DOI does for
+published URLs" — the answer was yes, with one refinement: `cdcf:` identifiers dereference to structured JSON-LD carrying typed relationships, so the model is "more like what
+Wikidata does as an entity graph with typed statements."[^1] That self-description is accepted here completely; it is the strongest available framing of what CDCF is for. Three
+consequences follow.
+
+**First, both named models mint machine-readable identifiers and carry readability in metadata.** A DOI name is, in the DOI Handbook's own words, "an opaque string" or "dumb
+number" — "nothing at all can or should be inferred from the number," and "the only secure way of knowing anything about the entity that a particular DOI name identifies is by
+looking at the metadata that the Registrant of the DOI name declares."[^2] Wikidata's Q-numbers work the same way: `Q7186` is one identifier labelled _Marie Curie_ in English and
+French and _Maria Skłodowska-Curie_ in Polish.[^3] Neither system is illegible in practice; both are illegible in the _string_ and legible in the _payload_. Neither asks its
+readers to give up legibility — each relocates it.
+
+**Second, the richer the resolution payload, the less semantic work the identifier string must do.** DOI resolves to a bare target URI and still succeeds. Draft 0.4.0 resolves to
+JSON-LD with `notations`, `crossReferences`, `licenses`, `doctrinalHistory`, and typed authority metadata (§5.4, §5.9). CDCF has built a resolution layer far richer than DOI's,
+which means the marginal legibility a transparent string buys is far smaller here than in the systems transparency's advocates usually cite. The payload has absorbed the job —
+and it does the job better, in every language at once.
+
+**Third, a disambiguation layer must be neutral among the names it arbitrates.** The purpose of such a layer is to adjudicate between competing names, spellings, languages, and
+structural placements for one referent. A transparent identifier pre-commits to one side of exactly the disputes the layer exists to resolve — silently, in every citation,
+forever. It is a strange arbiter that writes its verdict into its own name.
+
+---
+
+## Where the Proposal Agrees with the Rationale Doc
+
+Precision about how much of `draft-cdcf-identifier-rationale-00` this paper accepts is worth the space, because the agreement is larger than the disagreement.
+
+**The four-axes framework is right, and this paper adopts it.** The rationale doc separates axis A (grammar), axis B (transparency), axis C (structure), and axis D (consumption),
+and observes that fixing one does not fix the others (§2). That is correct and clarifying, and the argument below runs inside that vocabulary. **Axis A is conceded entirely** —
+"you want a grammar either way" is simply true, and under this proposal the ABNF work is not discarded but moves to the layer where hand-authored strings actually live, governing
+the notation and alias vocabulary plus one trivial production for the canonical shape. **Axis D is conceded entirely** — a reasoner must treat an IRI as a rigid designator, and
+the doc is right that opacity-to-reasoners does not entail machine-readable minting. The case for machine-readable minting made here is independent of D; it rests on durability
+and neutrality, not reasoner correctness.
+
+**Draft 0.4.0's two-artifact model is convergence, not conflict.** The most important thing in the 0.4.0 revision is §3.6: the recognition that graph identity and public citation
+are two jobs, and that both can be carried on one entity. That recognition is the same "and," not "or" instinct this paper builds on. The `notations` array (§5.9), the scheme
+URNs, the never-reassign stability guarantee (§3.4), and the `exact-match`/`close-match` relations that correctly refuse blanket `owl:sameAs` (§4.8.2, §3.6.1) are precisely the
+infrastructure a machine-readable-primary architecture needs. **This proposal reuses all of it.** The committee is invited to build nothing it has not already specified — only to
+decide which artifact carries the stability guarantee.
+
+**The slug schemes are the right vocabulary, in the wrong slot.** The registry slugs are careful, well-researched, and genuinely useful; they are exactly the alias vocabulary the
+standard needs — and CatholicOS has already built the mechanism this paper proposes to generalize, since CRMEDR ships `data/deprecated_ids.json` alongside `i18n/la.json`,
+`i18n/it.json`, and `i18n/en.json`.[^4] Deprecation records plus multilingual labels beside an identifier is not an imported architecture; it is a pattern this organization built
+once already, and the proposal is that it be applied universally rather than per-repo. **CSC.rdf's modeling instincts are right too, and this paper endorses them by name:** the
+Catholic Semantic Canon ontology attaches the edition by property (`hasEdition`, with `John_1_14` pointing at `NovaVulgata`) rather than baking it into the base text unit's IRI,
+and models vernacular renderings as first-class `Translation` artifacts linked by `hasTranslation`/`translationOf`.[^5] Both are what this paper proposes to make universal:
+volatile and language-specific facts belong in properties, not identifiers — and, once there, they can all be true at once.
+
+The dispute, then, is narrow. It lives on axes B and C: whether the _primary_ minted string carries meaning, and whether it encodes hierarchy.
+
+---
+
+## The Evidence: Transparency Produced Divergence, Not Convergence
+
+The rationale doc's strongest empirical claim is that transparency is the field's answer for hand-authored citation strings. The claim made here is narrower and closer to home:
+**inside this committee's own work, transparency has produced divergence rather than convergence — and quickly.**
+
+### Two entities, six spellings
+
+| Entity                      | CSC.rdf fragment IRI | CSC.rdf `identifier`               | Third live spelling                             |
+| :-------------------------- | :------------------- | :--------------------------------- | :---------------------------------------------- |
+| **John 1:14**               | `csc:John_1_14`      | `urn:catholic:scripture:john:1:14` | `cdcf:verse/jn/1/14` (per 0.4.0 §4.1.2 grammar) |
+| **Trent, Sess. XIII ch. 4** | `csc:Trent_S13_Ch4`  | `Trent-Session13-Ch4`              | `urn:catholic:council:trent:session13:chapter4` |
+
+The first two spellings of each pair sit in one file, on adjacent entities, under `purl.org/cdcf/ontology/catholic-semantic-canon#`;[^5] the third Trent form is the
+reference-linking example in the Rome working-session materials.[^6] That same file also carries `CCC-1376`, `ST-III-75-4`, and `CIC1983-915` — four shape conventions inside one
+`identifier` property. None of this is carelessness; each spelling is locally reasonable. That is the point: transparent identifiers are locally reasonable in incompatible ways,
+and no mechanical test detects the divergence. **One machine-readable canonical ID would have carried all six spellings as notations — none of them lost, none of them
+privileged — and the divergence would have been visible as what it is: six citation forms for two entities.**
+
+### The recorded in-repo record
+
+**CRMEDR** (Roman Martyrology eulogies) has already corrected shipped identifiers. A slug that captured an entry's introductory words rather than its subject was renamed
+`mr:0323-itemcoronae-sanctonim-martyrum` → `mr:0323-domitius-et-socii`; a later commit transliterated the Polish `ł` across ten identifiers (`mr:0308-vincentius-kad-ubek` →
+`mr:0308-vincentius-kadlubek` and nine siblings), stating the policy: "IDs are drafts pending committee review, so renamed in place with no deprecated-alias." Most instructive is
+the moved anchor — `mr:1210-marcus-antonius-durando` became `mr:0610-marcus-antonius-durando`, because the Latin _editio altera_ 2004 places the blessed on June 10 while the
+Italian (CEI) edition of the same book places him on December 10.[^4] The identifier hard-codes a fact that two editions of one work disagree about, so it must move whenever the
+anchor edition is reconsidered — and any downstream system already holding the old anchor breaks or drifts, as the executive summary notes.
+
+**CLEDR**'s crosswalk records the same phenomenon across projects. On 26 January 2021 the Congregation for Divine Worship decreed that 29 July be designated the Memorial of Saints
+Martha, Mary and Lazarus, replacing the celebration of Martha alone.[^7] CLEDR's row carries the Latin title _Sanctorum Marthæ, Mariæ et Lazari_ — and three irreconcilable keys:
+litcal froze `StMartha` (now factually wrong), romcal renamed to the 56-character `martha_of_bethany_mary_of_bethany_and_lazarus_of_bethany`, and eprex kept `martha`.[^8] Three
+projects, one decree, three divergent responses — and the row's source column still credits `missale_romanum_1970`, so the decree that caused the divergence appears nowhere in the
+identifier layer.
+
+**CECDR** (ecclesiastical circumscriptions) states a strip rule: generic type words such as "Diocese of" and "Diocesi di" are stripped, because "the _type_ is an attribute, not
+part of the identity." Against 2,935 live IDs, 58 still contain `arcidiocesi-di-` and 31 military and personal ordinariates carry a type word slugged across at least ten languages
+(`ordinariato militare`, `obispado castrense`, `diocese aux armees`, `ordynariat polowy`, `vojensky ordinariat`, and more) — 89 live identifiers at odds with the repository's own
+rule. Separately, `circ:it-opus-dei` was renamed `circ:int-opus-dei` because "the personal prelature of the Holy Cross and Opus Dei is supranational, so tying it to Italy … was
+wrong," and two homonymous Chinese sees are disambiguated by bare ordinals, `circ:cn-xinjiang-1` and `circ:cn-xinjiang-2`, both noted "qualifier pending committee review."[^9]
+
+Three sibling registries add three more shapes of the same problem. **CLBDR** contradicts itself between front page and schema: `README.md` documents
+`<book>_<territory-or-locale>_<year>` with the example `martyrologium_romanum_cei_2004`, while `docs/schema.md` specifies `<book-slug>_<year>_<bcp47>` — and the data follows the
+schema (`martyrologium_romanum_2004_it_IT`), so the README's example identifier exists nowhere in the registry. **CICLSALDR** records that its own `icl:` prefix "reads as the
+repository's shorthand, not as a canonical classification of every entry," because its scope includes societies of apostolic life, canonically distinct from consecrated life;
+`icl:cm` (_Congregatio Missionis_, typed `society_of_apostolic_life`) is live proof. **CMDDR** renamed its own acronym — "Fix typo in project name from CLDDR to CMDDR" — before
+minting a single identifier.[^10]
+
+**Draft 0.4.0 itself** supplies two more. It retired the `order` supertype before reaching 1.0, leaving `cdcf:institution/order/{slug}` resolvable only via successor pointers
+(§4.7). And §4.6.1 requires an ordinal on every papal identifier, producing `cdcf:person/pope-francis-i` — an ordinal the Church did not use: the Vatican listed the name simply as
+_Francis_ in its first bulletin, and the press office's own gloss was that "it will become Francis I after we have a Francis II."[^11] The identifier asserts a fact about the
+Church that the Church declined to assert. Meanwhile Open Issue 1 (Psalm numbering) and Open Issue 5 (multilingual slugs) have survived four revisions unresolved (§10) — both
+disputes that exist _only because_ the identifier string must choose.
+
+A committee member may fairly object that draft registries are _supposed_ to churn — that is what a pre-1.0 registry is for. Two answers. First, litcal, romcal, and ePrex are not
+drafts; they are production systems, and the St Martha divergence happened in their _shipped_ keys — a 2021 decree left `StMartha` frozen factually wrong in a production API while
+a sibling project renamed to a 56-character key — so the mechanism operates after normativity, not only before it. Second, the churn's causes — multilingual naming, movable
+anchors, editorial judgment about which name is _the_ name — do not end at 1.0: popes keep being elected, dioceses keep merging, decrees keep expanding memorials. **Normativity
+freezes the identifiers, not the world.** Transparency's maintenance burden is therefore not a one-time migration but a standing obligation, recurring whenever the world, an
+edition, a decree, or a translation policy changes.
+
+That standing obligation is usually costed as engineering time, and that is the smaller half of the bill. Every one of the disputes above is a governance-quality problem a
+diligent committee will keep solving — and solving each one costs something scarcer than engineering time. Identifier disputes of this kind will not number in the dozens. Across
+six registries, twenty-four churches _sui iuris_, and a goals ladder that reaches past Catholicism entirely, they will number in the thousands. Each one produces a winner and at
+least one loser, and each loser's grievance is individually small, individually reasonable, and cumulative. Accumulated far enough, the grievance stops being about any particular
+identifier and becomes a sentence a stakeholder says on the way out the door: _I'll leave the standard — it's too Latin-centric._ Or too English-centric, or too Roman, or too
+Western. A standard has a finite supply of dispute powder, and it should be spent on the disputes that actually matter — the levels of authority, the doctrinal classifications,
+the scope of the ontology, the terms of ecclesiastical review — not on what to call things.
+
+The design conclusion follows directly: make the identifiers **maximally neutral**, and make each identifier's concept **objective rather than subjective** — a referent
+stakeholders can agree exists, rather than a name they must agree to use. Two results follow. Disputes resolve faster, because the question shrinks from _which name owns the
+citation string for the next century_ to _which label carries `prefLabel` in which language_, which is a reversible call nobody has to win. And adoption widens, because the
+standard's answer to "you have spelled our name wrong" stops being a change-control negotiation and becomes **"yes — added as a synonym."** That is what an adaptive, durable
+standard sounds like from the outside.
+
+And there is a kicker, which is that when the identifier itself must be argued out with every stakeholder, even winning the argument produces the drift the argument was meant to
+prevent. Suppose one reading prevails and the string is minted; a later revision, a new stakeholder, or a decree concedes the other form. The identifier is now deprecated, and the
+concept wears a word that differs from the word in the string every earlier document cites — precisely the mismatch a transparent identifier exists to avoid. The minority loses
+immediately and the majority loses on the next revision, so everyone loses. Under this proposal none of those events costs an identifier at all — each of them adds a label or a
+notation, which is what those layers are for, and nobody has to lose anything.
+
+---
+
+## Where Does the Churn Land
+
+Strip away the vocabulary and one question remains. **Every identifier architecture must absorb world-change somewhere.** Editions get revised, dioceses are erected and merged, a
+decree expands a memorial from one saint to three, a prelature turns out to be supranational, a committee decides `order` should have been `institute`. The choice is not whether to
+absorb change but which layer takes the hit.
+
+**Transparent-primary architectures absorb it in the canonical layer.** Every change becomes a deprecation, a successor pointer, a permanently stale citation in a document nobody
+will revise. Draft 0.4.0 handles this correctly — §3.4 requires that both original and successor stay resolvable indefinitely — but "handles correctly" means "accumulates
+forever," and the discipline it requires is perpetual institutional rigor, which even ISO failed at once: `CS` was used for Czechoslovakia and then reused for Serbia and
+Montenegro, and ISO's own archival code for the latter had to be changed from `CSHH` to `CSXX` to stop the collision. ISO's success story is the other half of the same standard —
+Burma → Myanmar archived as `BUMM`, withdrawn alpha-2 codes transitionally reserved for at least fifty years before any possible reuse.[^14] The rationale doc reads this correctly
+(§7): reassignment is the danger, and it is a governance failure available to both camps.
+
+**Machine-readable-primary architectures absorb it in the alias layer, which is built to age.** When a slug turns out to be wrong it is not corrected — it is _joined_.
+`mr:1210-marcus-antonius-durando` and `mr:0610-marcus-antonius-durando` both resolve, forever, to one entity; the Latin edition and the CEI edition are each right about their own
+book; nothing published ever breaks. `StMartha`, `martha`, and the 56-character romcal key all resolve to one celebration, and the 2021 decree becomes a property on the record
+rather than a naming crisis in three projects. Aliases are supposed to pile up. Canonical identifiers are not. Note what this preserves: every legible string anyone has ever
+written keeps working, in the layer where legibility belongs.
+
+**One human being, five names, one identifier.** The clearest case is a person now living. The reigning pope was born Robert Francis Prevost; he was _Bob_ to his brother, then Fr.
+Prevost, then Bishop and later Cardinal Prevost, and is now Pope Leo XIV. Nothing about the human being changed at any of those moments except what people call him — and the
+standard needs exactly one canonical identifier for him across the whole span. A human-readable identifier has to be minted at one point on that timeline, and it then has two
+options, both bad. It can drift with each new name — `robert-prevost`, then `cardinal-prevost`, then `pope-leo-xiv` — breaking every citation minted before each change, three
+times over one lifetime. Or it can stay frozen where it was minted, which leaves an identifier reading `robert-prevost` as the canonical string for the reigning pope: defensible
+as history, plainly inaccurate in the present, and drawing exactly the ire the transparent string was supposed to avoid — the same failure mode `cdcf:person/pope-francis-i`
+exhibits from the other direction, asserting an ordinal the Church declined to use. A machine-readable ID never faces that choice. It carries every name and every era at once, as
+labels and notations, and every citation ever written keeps resolving. Objection 1 below shows the same mechanism absorbing the _other_ axis of the papal-name problem — Leo,
+Leone, León — by the same move.
+
+And the cost asymmetry has inverted since this trade-off was last argued seriously. The rationale doc calls the cost of opaque (durable) identifiers "permanent and unsolvable
+by design" — a mandatory lookup for every human who reads the identifier (§7). That was true in 2005. Hover labels, IDE inlays, resolver-backed link previews, and agents that
+never hand-type an identifier have collapsed the lookup cost toward zero, and CDCF's own resolution protocol is precisely the substrate those human-readable surfaces run on.
+CatholicOS need not take this on faith: ontokit already renders resolver-backed labels beside machine-readable `osc:` R-IDs today — its source-view hover resolves a full IRI to
+its label, and its `useIriLabels` hook label-joins API responses.[^15] Drift costs move the other way: they rise with every integration, every downstream project, every new
+edition, and every tradition the standard reaches for. **Legibility costs are falling toward zero; drift costs rise with adoption.** The transparent trade-off was right for 2005.
+It is not right for a standard minted in 2026 to last a century.
+
+**The trajectory is visible in who writes the code.** Ask the question in rough terms, since the exact figures are not the point. Of the code written in 2025, how much was drafted
+and reviewed by a human being — nearly all of it? By early 2026, perhaps two-thirds. By mid-2026, perhaps a quarter or less. What will the human-drafted, human-reviewed share be
+in July 2027? In 2037? Those numbers are illustrative estimates of a visible trajectory rather than measurements, and nothing here depends on any one of them being right; the
+argument depends only on the direction, which is not seriously in dispute. It has a design consequence. A standard minted in 2026 and intended to last a century should optimize
+for what stays hard, not for what is already being solved. What is already being solved is interpretability: IDEs, resolvers, and agents render a label in the reader's own
+language and rite, on demand, at the moment of reading, and they will do it more thoroughly every year. What stays hard is durability across a century of world-change, and
+flexibility among contentious stakeholders who disagree with each other and are not finished arriving. Nothing but architecture has ever solved that second problem, and
+optimizing the canonical layer for a reading cost that is falling spends the architecture on the wrong half.
+
+---
+
+## Worked Example: Canonicalizing Levels of Authority
+
+The committee has an open question about how to canonicalize levels of authority.[^1] It is an ideal test of the architecture, because three formulations already coexist and they
+are not 1:1 mappable.
+
+| Source                         | Count | Values                                                                                                                                           |
+| :----------------------------- | :---- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Rome working-session materials | 6     | Primary Revelation · Universal Ordinary Magisterium · Papal Magisterium · Universal Theological Commentary · Local Magisterium · Private Opinion |
+| CSC.rdf individuals            | 6     | `PrimaryRevelation` · `UniversalOrdinary` · `PapalMagisterium` · `CommentaryLevel` · `LocalOrdinary` · `NonMagisterial`                          |
+| Draft 0.4.0 §6.2               | 5     | `solemn-definition` · `ordinary-universal` · `definitive-doctrine` · `authentic-doctrine` · `pastoral-guidance`                                  |
+
+Two things are worth noticing. First, the Rome materials disagree with _themselves_ about ordering: the pyramid slide runs Primary Revelation, Universal Magisterium, Papal
+Magisterium, Local Magisterium, Commentary, Private opinion — placing Local Magisterium above Commentary — while the authority-metadata table on a later slide places Universal
+Theological Commentary above Local Magisterium.[^6] Second, the two six-value lists and the five-value list do not measure the same thing: the first two answer _who teaches_, and
+draft 0.4.0's answers _what assent is owed_ (§6.1). Those axes correlate but do not align; the same document can sit high on one and lower on the other.
+
+Harmonizing this is real theological work, and not this paper's to do — draft 0.4.0 §7.3 rightly requires theologian and canonist review for exactly these classifications. What can
+be said now is what the harmonization will do to the identifiers. It will rename levels, reorder them, split at least one, and possibly separate the two axes into two vocabularies.
+If level-IDs are transparent strings, every one of those moves breaks every text already tagged: a corpus tagged `"UniversalOrdinary"` is stranded the moment the level is renamed or
+its boundary redrawn, and the migration is a rewrite of the annotation layer rather than of a lookup table. If level-IDs are machine-readable, with today's names carried as labels
+and all three existing vocabularies carried as notations, the theology can develop _and_ the data survives — every name in the table above stays readable and citable, the record's
+label changes, the tagged corpus does not move, and the crosswalk between the who-teaches and what-assent axes becomes a property rather than a renaming. That is the whole argument
+in one case. **The identifier architecture should let the theology be revised. It should not require the theology to be finished first.**
+
+That is a claim about method as much as about identifiers. Under a waterfall model — the Latin Church, all twenty-three Eastern churches _sui iuris_, and every episcopal
+conference reviewing and signing off on the vocabulary before anything is built — human-readable identifiers would carry considerably less risk, because the names would be settled
+before the first string was minted. Freeze the requirements, then mint. That is not how this standard is being built. It is being built iteratively: artifacts ship, stakeholders
+read them, and the next revision absorbs what they said — which means stakeholders weigh in _after_ the artifacts exist, not before, and the set of stakeholders is itself still
+growing as the goals ladder extends. Iterative building requires exactly two properties of its identifiers. **Durability:** nothing already published breaks when a later
+stakeholder arrives with a correction. **Flexibility:** the new stakeholder's name for a thing arrives as a synonym rather than as a rename. A machine-readable canonical ID with a
+guaranteed label layer supplies both. A transparent string, minted before the stakeholders who will argue about it have arrived, supplies neither.
+
+---
+
+## The Proposal
+
+Five commitments. Nothing here replaces draft 0.4.0's machinery; each item names the 0.4.0 mechanism it rides on. The shape of the whole is "and," not "or" — not a durable
+identifier _or_ an interpretable record, but both, the machine-readable ID canonical and the human-readable layer guaranteed by the standard rather than left to each
+implementer's good intentions.
+
+1. **Canonical identifiers are machine-readable, `R`-shaped, and org-wide.** Every canonical ID CatholicOS mints — ontology and every data registry — is a base62-encoded 128-bit
+   UUID prefixed `R` (23 characters in practice; 122 random bits, so decentralized minting needs no counter and no central allocator, and the leading letter keeps it QName-safe
+   for RDF/XML). This is not new for CDCF: it is the shape already shipping in `ontology-semantic-canon`, where `osc:RChKPk9K152BirrIYgAREsY` is _Clergy_, and the shape ontokit
+   already mints.[^15] It is also FOLIO's shape — `folio.openlegalstandard.org/R7Ttdyo4FsvaupPKT35Qry0` is _Murder_.[^16]
+2. **Every existing slug, key, and registry prefix becomes a permanent resolvable alias.** `mr:0629-petri-et-pauli`, `circ:`, `icl:`, CLEDR keys, CLBDR edition IDs,
+   litcal/romcal/eprex keys,
+   `cdcf:verse/jn/1/14`, `cdcf:concept/C0000418` — all carried as 0.4.0 `notations` (§5.9) under declared scheme URNs, resolvable per §3.4, **never deprecated and never reused**.
+   This is the IP/DNS model, and the analogy is worth stating plainly: nobody argues that an IP address should be human-readable, and nobody has to, because the domain name
+   resolves to it. No adopter loses a working key. That is the adoption story.
+3. **Every entity carries multilingual labels.** `skos:prefLabel` and `skos:altLabel`, language-tagged, on every entity in every registry — `"Fílius Dei"@la`, `"Dio Figlio"@it`,
+   `"God the Son"@en`, `"Lógos"@grc` on one record. Naming disputes are resolved by **adding a label**, never by changing an identifier. CRMEDR's `i18n/{la,it,en}.json` is the
+   existing precedent; this generalizes it.
+4. **Production surfaces MUST render a label beside every canonical ID.** Registry source files carry a label column or comment beside each ID; serializations carry the label
+   inline; UIs and generated code render it. The rule is baked into the standard's documentation and into its coding guidelines — the conventions agentic coders read and follow —
+   so compliance does not depend on each implementer remembering it; and as agentic coding becomes prevalent, every production surface will carry its human-readable labels, in the
+   user's preferred language and rite, as a matter of course. This commitment is the half of the "and" that makes the other half livable, and it belongs in the standard rather
+   than in each implementer's good intentions.
+5. **Structural and volatile facts live in properties, never in canonical identifiers.** Dates and calendar position (CRMEDR's `MMDD` anchor), country codes (CECDR's ISO 3166
+   prefix), taxonomy supertypes (`circumscription`, `institute`, the retired `order`), edition years (CLBDR), chapter/verse hierarchy, ownership, and language are all already
+   modeled as fields in 0.4.0 responses. Where a fact lives both in a field and in the identifier, the identifier is the copy that goes stale.
+
+---
+
+## Universal Slugs Across Standards
+
+Draft 0.4.0 §4.9 already states the principle worth generalizing: a sibling registry's slug "MUST be reused verbatim as the final path segment of the corresponding `cdcf:` IRI …
+This is a MUST, not a convention: it is what makes the pairing machine-verifiable rather than merely coincidental." That is exactly right, and it is the seed of something larger.
+Lift it one level, from sibling registries to peer standards: when CatholicOS and another standard identify the same referent, they reuse the **same machine-readable local name**
+under their own namespaces.
+
+```text
+https://ontology.catholicos.catholic/R7Ttdyo4FsvaupPKT35Qry0
+https://folio.openlegalstandard.org/R7Ttdyo4FsvaupPKT35Qry0
+```
+
+Cross-standard identity becomes machine-verifiable by local-name equality — no mapping table, no crosswalk to maintain, no `sameAs` hazard. Each standard keeps its own namespace,
+governance, labels, and resolution payload; only the local name is shared, and each side's readers still see their own tradition's words. **This is possible only because the shared
+name asserts nothing in anyone's language.** No tradition will agree to share `god-the-son` across Jewish, Catholic, and Protestant standards — the string itself is a theological
+claim, and for two of the three it is the wrong one. But every tradition can share `Rh895FOUgLMfrylaO713w1`, because it says nothing at all, and each standard attaches its own
+label, definition, and typed statements to it — the very record shown in the first exemplar above. A machine-readable name is not merely tolerable at the inter-tradition boundary;
+**it is the only thing that crosses it, and it is what lets each tradition keep its own language on its own side.** That is the interfaith-alignment benefit named in the goals
+ladder, and it is concrete rather than aspirational: shape-compatibility with FOLIO today, and a mechanism that scales to machine-readable identifier work across the Abrahamic
+traditions tomorrow. The alternative — a mapping table between every pair of standards, maintained by all parties in perpetuity — is the cost transparency imposes at exactly the
+boundary where the goals ladder can least afford it. And the peer-standard set is not a pair. It is many ontologies at once — Catholic, Protestant, and Jewish standards, and legal
+standards such as FOLIO and SALI, among others, with more arriving as the ladder extends — so pairwise mapping tables scale quadratically in the number of standards, while a
+shared machine-readable local name scales not at all.
+
+---
+
+## Costs the Proposal Accepts — and Their Remedies
+
+Machine-readable identifiers have real costs. Naming them here is better than letting them be discovered later. Each remedy is a piece of the human-readable layer, which is why
+the layer is a commitment of the proposal rather than an aspiration.
+
+| Cost                     | The problem, stated plainly                                                                                                 | Remedy                                                                                                                                   |
+| :----------------------- | :-------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| **Diff reviewability**   | A slug in a pull request is self-checking; a reviewer sees a wrong one. `Rk8f3vQ2…` is not self-checking and never will be. | Mandatory label columns in registry source files, so every diff line carries an ID **and** a human-readable label that reviews itself.   |
+| **Silent wrong-paste**   | Paste the wrong machine-readable ID and nothing looks wrong. Paste the wrong slug and something usually does.               | Lint rules validating every ID against the registry and asserting label/ID agreement in CI; label comments beside IDs in serializations. |
+| **Debugging ergonomics** | A log line, stack trace, or SPARQL result full of base62 is harder to read than one full of slugs.                          | IDE inlays and resolver-backed hover labels; named constants bound to canonical IDs at call sites; label-joining helpers in tooling.     |
+| **Onboarding friction**  | A newcomer reading raw data cannot orient without a lookup.                                                                 | The §5.9 `notations` array ships every canonical record with all its familiar slugs, so a newcomer's existing vocabulary still works.    |
+
+None of these remedies is speculative — each exists in shipped systems, and two exist in CatholicOS repositories today. But the list is not claimed to be complete. **The
+committee, and especially the transparent camp, is invited to name costs this paper has missed and mitigations it has not thought of.** If a cost turns out to have no adequate
+remedy, that is a finding worth having before adoption rather than after.
+
+One note on all four rows together. Every cost above is a cost paid by a human being handling raw identifiers by hand — pasting them, scanning them in a diff, reading them in a
+log — and that is the population shrinking fastest. As agentic coding becomes prevalent, an agent neither hand-pastes an identifier nor reads a diff unaided: it resolves the ID
+and renders the label, in the reader's language, as an ordinary part of doing the work. Each row therefore trends toward zero on the same trajectory described in §5. The costs are
+real today and should be weighed as real today — but they are shrinking, which is the exact opposite of the drift costs a transparent canonical layer accumulates.
+
+---
+
+## Objections at Full Strength — and Their Remedies
+
+This paper is not neutral, but the transparent case deserves its full strength, because a proposal that defeats only weak versions of the opposition deserves to lose. Each
+objection below is stated at its best, then followed by the failure mode it develops over time, a concrete mitigation from the human-readable layer, and an invitation. If the
+transparent camp can name a remedy for one of these failure modes that costs less than the one offered here, that should decide the question.
+
+### Objection 1 — The BCP 47 / Unicode layered model
+
+**At full strength.** The rationale doc's §5 is its best section. BCP 47 composes stable atomic registry codes by ABNF into `zh-Hant-TW`: a tag simultaneously transparent to a
+human, grammar-validated, built from stable atoms, and opaque to a matcher. Unicode pairs an opaque code point `U+0041` with a name — `LATIN CAPITAL LETTER A` — frozen forever by
+its stability policy. The i18n stack runs on these, in CDCF's exact use case: hand-authored, quoted-in-the-wild identifiers, for two decades. Nobody writes `lang="Q1860"`.
+
+**Failure mode.** BCP 47's registry survives change only through alias machinery — which is this proposal's architecture, not transparency's. RFC 5646 §3.1.6 and §3.1.7 define
+`Deprecated` and `Preferred-Value` precisely so the registry can carry `iw` forever while canonicalizing it to `he`; the §3.4 stability guarantee is that `Subtag`, `Type`, and
+`Added` "MUST NOT be changed" — the subtag is never removed, only redirected.[^12] That is a machine-readable spine wearing legible clothes: the durable layer and the readable
+layer, already both present. More decisively, language tags have a property no Catholic entity has: they are written in the one alphabet definitionally neutral for their domain,
+and their referents are the naming authorities themselves. There is no Latin-versus-Italian dispute about how to spell `en`. There is exactly such a dispute about
+`pope-{name}-{roman}`: Leo, or Leone, or León? CECDR's ten-language ordinariate slugs are that dispute already lost, at scale.
+
+**Mitigation and invitation.** Adopt the BCP 47 architecture in full, including the part that does the work. Under this proposal `Preferred-Value` is not approximated; it _is_ the
+alias layer, and every competing spelling of the reigning pope — `pope-leo-xiv`, `papa-leone-xiv`, `papa-león-xiv` — becomes a permanent resolvable notation on one canonical ID,
+none privileged, none wrong, and none dropped. An Anglophone developer keeps writing `pope-leo-xiv`; an Italian diocesan office keeps writing `papa-leone-xiv`; both resolve to the
+same record and neither had to win. A proposal for how a transparent primary IRI carries three co-equal language forms without electing one would be welcome.
+
+### Objection 2 — Code ergonomics
+
+**At full strength.** `if (key == "immaculate-conception")` is readable in a diff, greppable in a log, and self-documenting in a stack trace. `if (key == "Rk8f3vQ2…")` is none of
+those. Most humans who ever touch these identifiers are application developers, not ontologists, and their productivity is a real cost that ontological purity does not pay.
+
+**Failure mode.** The legibility is real but bound in the wrong place: in a literal, at every call site. When the referent's boundary or preferred name changes, every call site is
+stale in a way no compiler catches. The string was never checked against the record; it was trusted because it looked right.
+
+**Mitigation and invitation.** Named constants bound to canonical IDs — `const GOD_THE_SON = "Rh895FOUgLMfrylaO713w1"` — which is how every codebase already handles hex colors,
+port numbers, and country codes. That restores full call-site legibility while leaving exactly one authoritative binding to audit, and the rendering rule (§7, item 4) extends it to
+registry source files, serializations, and generated code so a label always sits beside the ID — the fourth exemplar in the executive summary is the shipped version of this, in
+ontokit today. If the constant-binding overhead is too high for a particular consumer, that workflow would be worth seeing, so the human-readable layer can be shaped around it.
+
+### Objection 3 — Church-oversight verifiability
+
+**At full strength.** Ecclesiastical review is a genuine requirement, and reviewers are theologians and canonists, not engineers. A bishop's delegate can read
+`cdcf:magisterium/pope-leo-xiii/rerum-novarum` and confirm it is right. Nobody can review a page of base62.
+
+**Failure mode.** Transparency converts review from _verification_ into _recognition_. The reviewer confirms the string looks correct; the string is not thereby checked against the
+record. When a slug is subtly wrong — a garbled Latin incipit captured as a subject name, a date drawn from the wrong edition, an ordinal the Church never used — it passes review
+precisely because it reads plausibly. Every recorded CRMEDR correction above was a plausible-reading slug that shipped.
+
+**Mitigation and invitation.** The first half needs no tooling at all: under commitment 4 of the Proposal, the registry source file a canonist reviews _remains a plain text file_,
+with the Latin label in the column adjacent to the ID — the second exemplar in the executive summary is that file. Nothing is taken away from text-file reviewers — the
+machine-readable ID is an added column, not a substitute — so recognition-style review continues exactly as it does today, while verification-style review becomes possible on top
+of it. Verification against labels rendered _from_ canonical IDs is strictly safer, because it checks the record rather than trusting the key. Under the rendering rule a review
+surface shows the canonical ID with its `skos:prefLabel` in the reviewer's own language — Latin, Italian, English — resolved live from the registry, so a reviewer sees what the
+system actually believes rather than what a past minting decision asserted. The committee's review-workflow requirements would be welcome as design input for that rule, which is
+the natural place to encode them.
+
+### Objection 4 — Things versus concepts
+
+**At full strength.** The rationale doc's §6 is its most original contribution and genuinely explanatory: OBO Foundry and the Gene Ontology went opaque because biological
+categories are reclassified as science advances, while BCP 47 and OSIS went transparent because languages and scriptural books are fixed.[^13] CDCF spans both, so it should apply
+both rules per dataset. The residual fringe among things — antipopes, the Stephen II/III ambiguity, the skipped John XX — is finite, enumerable, and already adjudicated by the
+Church's own historical record.
+
+**Failure mode.** The criterion cross-cuts the doc's own evidence. Its §4.1 table lists **VIAF, Getty (TGN/ULAN/AAT), and GeoNames** as opaque — and those are authority files of
+_things_: persons, places, named artifacts. It lists **schema.org, FOAF, Dublin Core, and SKOS** as transparent — and those are _concept_ vocabularies of classes and properties. If
+things→transparent and concepts→opaque were the rule, those rows sit on the wrong side of it; and the row the doc itself flags as drift-prone is **DBpedia**, transparent
+identifiers for things, derived from article titles, which break on rename (§4.1). The line the field actually draws is simpler, and it is the doc's own summary sentence in §4.1:
+**opacity clusters where a resolver always mediates.** That describes CDCF exactly — draft 0.4.0 specifies a resolution server, mirror discovery, content negotiation, a change
+feed, and one-year immutable caching (§5.1–§5.9). CDCF is not choosing whether to be resolver-mediated; it has already chosen.
+
+**Mitigation and invitation.** Apply the resolver criterion, which CDCF satisfies, rather than the things/concepts criterion, which the doc's own evidence table does not support —
+and keep the things/concepts insight where it is undeniably right: as the rule for which _notation scheme_ to feature. Scripture keeps OSIS, canons keep their numbers, CCC keeps
+its paragraph numbers; this proposal never asks anyone to stop writing them, only that they be notations on a durable spine rather than the spine itself. `John 1:14` stays
+`John 1:14` — in OSIS as `John.1.14`, in CSC.rdf as `csc:John_1_14`, in the 0.4.0 grammar as `cdcf:verse/jn/1/14` — all three on one record, none of them the thing that must never
+change. If the committee believes there is a closed class of entities whose canonical naming is genuinely finished, an enumeration of it would be welcome — a reading of the six
+registries suggests every candidate class has already recorded a rename.
+
+### Objection 5 — "Just take a vote on the language"
+
+**At full strength.** Standards bodies decide contested questions by deliberation and vote all the time. Latin is the Church's own language and an obvious Schelling point.
+Committees exist to make exactly these calls; declaring the question unanswerable is an abdication.
+
+**Failure mode.** A vote produces a winner and a resentful minority — per identifier, permanently, and visibly in every citation string. That is a governance tax recurring with
+every new entity and compounding with every tradition the standard hopes to serve. It is also empirically what has happened: Open Issue 5 has been open across four revisions,
+CRMEDR mints Latin lemmas, CLEDR mints English snake_case, and CECDR's ordinariates ended up in ten languages without anyone ever deciding they should.
+
+**Mitigation and invitation.** Multivalued labels produce no losers. `skos:prefLabel` is language-tagged; a Polish reader gets Polish and a Latin reader gets Latin, from one
+record, with no election held. The precedent is trivially familiar: _honor_ and _honour_ are both correct, and no standard had to choose, because they are labels rather than keys.
+If a vote is nonetheless preferred for a given domain, note that under this proposal it decides which notation carries `prefLabel: true` — a reversible, low-stakes call — rather
+than which identifier the world cites for a century.
+
+---
+
+## Recommended Amendments to Draft 0.4.0
+
+These are offered as amendments the committee can adopt into the existing text, not as a rival document. Draft 0.4.0's non-identifier machinery — the `licenses` object, authority
+metadata, content negotiation, caching, resilience, and the governance process — is endorsed as written.
+
+| §                    | Amendment                                                                                                                                                                                                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **§3.6**             | Make the ontology IRI machine-readable for **every** domain, not only `concept/`. Each domain's current transparent path form becomes a **guaranteed** notation rather than an optional one. The two-artifact model is unchanged; only which artifact is primary.  |
+| **§3.3, Appendix D** | Re-scope the ABNF grammars to govern the notation layer, where hand-authored strings live. Add one production for canonical IRIs: `canonical-id = "R" 20*24(ALPHA / DIGIT)` (base62, case-sensitive — this relaxes §3.3's lower-case rule for canonical IDs only). |
+| **§4.5**             | Extend the opaque (durable) option from `concept/` to all domains, and recommend the `R` shape over sequential `C0000418` for new mints. Existing `C…` IDs are kept as permanent notations; **no forced migration** (§1.3 preserved).                              |
+| **§4.9**             | Extend the verbatim-slug MUST to **cross-standard** machine-readable local names: peer standards identifying the same referent SHOULD reuse the same local name under their own namespaces.                                                                        |
+| **§3.4**             | State explicitly that the stability guarantee applies to notations as permanent aliases: a published notation MUST remain resolvable and MUST NOT be reassigned, exactly as an IRI.                                                                                |
+| **§5.9**             | Make `notations` load-bearing in every domain (withdrawing §3.6's permission to omit it for "thing" domains), and add `skos:prefLabel`/`altLabel` as a REQUIRED language-tagged field on every resolution response.                                                |
+| **New §5.10**        | Add a production rendering rule: registry source files, serializations, UIs, and generated code MUST render a human-readable label adjacent to every canonical ID.                                                                                                 |
+| **§10, new issue**   | Mint namespace: **one org-wide namespace** shared by the ontology and all registries is recommended. The host choice — `id.catholiccommons.org` (§3.1) versus `ontology.catholicos.catholic` (already live for `osc:`) — is a committee decision.                  |
+
+Two notes on scope. This proposal executes no data migration; beyond the permanent-alias commitment, migration mechanics are committee work. And it proposes no theological
+harmonization — §7.3 review remains the right gate for anything touching doctrinal classification.
+
+---
+
+## Bibliography
+
+[^1]:
+    Committee discussion, July 2026 (data-and-standards group), paraphrased without attribution. The exchange characterized CDCF as the meta-level disambiguation layer, "kinda like
+    what DOI does for published URLs," refined as "more like what Wikidata does as an entity graph with typed statements," and raised the canonicalization of levels of authority.
+
+[^2]:
+    International DOI Foundation, _DOI Handbook_, §2.2 (Syntax of a DOI name) and §2.2.1 (General characteristics), https://www.doi.org/doi_handbook/2_Numbering.html. The quoted
+    phrases "opaque string," "dumb number," and the metadata sentence are from those sections.
+
+[^3]:
+    Wikidata, "Help:Items," https://www.wikidata.org/wiki/Help:Items. Item `Q7186` is labelled _Marie Curie_ in English and French and _Maria Skłodowska-Curie_ in Polish; labels,
+    descriptions, and aliases are per-language while the identifier is not.
+
+[^4]:
+    CatholicOS, _CRMEDR_, github.com/CatholicOS/crmedr: commit `afb5a70` ("Fix garbled/spurious registry IDs (rename/remove, not deprecate)"); commit `d6439bd` ("Fix ł-drop in
+    canonical slugs: transliterate ł→l (10 Polish IDs)"), whose message states the quoted policy; `docs/canonicalization-report.md` (moved date anchor); and the alias/label
+    precedent in `data/deprecated_ids.json` with `i18n/la.json`, `i18n/it.json`, `i18n/en.json`.
+
+[^5]:
+    _Catholic Semantic Canon_ ontology (CSC.rdf, v1.0.0), namespace `http://purl.org/cdcf/ontology/catholic-semantic-canon#`: individuals `John_1_14` and `Trent_S13_Ch4`;
+    `identifier` values `urn:catholic:scripture:john:1:14`, `Trent-Session13-Ch4`, `CCC-1376`, `ST-III-75-4`, `CIC1983-915`; `hasEdition`/`Edition` and
+    `hasTranslation`/`translationOf`/`Translation`. The base text unit's IRI is edition-neutral, though the vernacular `Translation` individual (`John_1_14_NABRE`) does concatenate
+    its edition into its IRI.
+
+[^6]:
+    Rome working-session materials, "Why AI for the Church Needs a Hierarchy of Authority" (presentation deck, 2026). The pyramid slide and the authority-metadata table slide order
+    Commentary and Local Magisterium differently; the reference-linking slide gives `urn:catholic:council:trent:session13:chapter4` as its example target.
+
+[^7]:
+    Congregation for Divine Worship and the Discipline of the Sacraments, _Decree on the Celebration of Saints Martha, Mary and Lazarus in the General Roman Calendar_, 26 January
+    2021, https://www.vatican.va/roman_curia/congregations/ccdds/documents/rc_con_ccdds_doc_20210126_decreto-santi_en.html.
+
+[^8]:
+    CatholicOS, _CLEDR_, github.com/CatholicOS/cledr, `liturgical_events.md` — crosswalk row for _Sanctorum Marthæ, Mariæ et Lazari_, carrying `litcal_key: StMartha`,
+    `romcal_key: martha_of_bethany_mary_of_bethany_and_lazarus_of_bethany`, `eprex_key: martha`, and source `missale_romanum_1970`.
+
+[^9]:
+    CatholicOS, _CECDR_, github.com/CatholicOS/cecdr. Strip rule and Xinjiang note: `docs/schema-proposal.md`. Counts measured against `data/circumscriptions.json` (2,935 IDs; 58
+    containing `arcidiocesi-di-`; 31 ordinariates carrying a type word). Opus Dei rename and its quoted rationale: commit `5067fb8`.
+
+[^10]:
+    CatholicOS sibling registries, github.com/CatholicOS: _CLBDR_ (`README.md` line 21 against `docs/schema.md` and `data/editions.json`); _CICLSALDR_ (`docs/schema-proposal.md`
+    prefix note; `data/institutes.json`, `icl:cm` typed `society_of_apostolic_life`); _CMDDR_ (commit `13d3de9`, "Fix typo in project name from CLDDR to CMDDR").
+
+[^11]:
+    Associated Press, "Just Francis," _Philippine Daily Inquirer_, March 2013, https://newsinfo.inquirer.net/373397/just-francis. The Vatican's first bulletin listed the name
+    without a Roman numeral; the press office's gloss was "It will become Francis I after we have a Francis II."
+
+[^12]:
+    A. Phillips and M. Davis, eds., _Tags for Identifying Languages_, BCP 47 / RFC 5646 (IETF, September 2009), §3.1.6 (`Deprecated`), §3.1.7 (`Preferred-Value`, including the
+    `iw`/`he` example), and §3.4 (stability of `Type`, `Subtag`, `Tag`, and `Added`), https://www.rfc-editor.org/rfc/rfc5646.txt.
+
+[^13]:
+    Gene Ontology Consortium, "Ontology Documentation," https://geneontology.org/docs/ontology-documentation/ — "Every term has a GO ID, a unique seven digit identifier prefixed by
+    GO:"; obsoleted terms keep "the term and ID … in the ontology," tagged obsolete. See also OBO Foundry, Principle 3: URI/Identifier Space,
+    https://obofoundry.org/principles/fp-003-uris.html.
+
+[^14]:
+    ISO 3166-3, _Codes for the representation of names of countries and their subdivisions — Part 3: Code for formerly used names of countries_. Burma → Myanmar is archived as
+    `BUMM`; `CSHH` was first assigned to Serbia and Montenegro despite its prior use for Czechoslovakia and was subsequently changed to `CSXX`; withdrawn alpha-2 codes are
+    transitionally reserved for at least fifty years. See https://en.wikipedia.org/wiki/ISO_3166-3 and ISO Online Browsing Platform, https://www.iso.org/obp/ui/#iso:code:3166:CS.
+
+[^15]:
+    CatholicOS, _ontology-semantic-canon_, github.com/CatholicOS/ontology-semantic-canon, `queries/jena/01-church-hierarchy.rq` (`osc:RChKPk9K152BirrIYgAREsY` = Clergy) and
+    `sources/ontology-semantic-canon.ttl`; ontokit, github.com/CatholicOS/ontokit-web, `lib/ontology/iriGeneration.ts` (`uuidToBase62`, prefixed `"R"` "to ensure RDF/XML QName
+    safety"). The same repository already ships the human-readable layer beside those machine-readable IDs: `lib/hooks/useIriLabels.ts` resolves a set of IRIs to `rdfs:label`s and
+    label-joins them into API responses (cached per project and branch), and the Turtle editor's Monaco hover provider — `registerHoverProvider` in
+    `components/editor/TurtleEditor.tsx` — renders `Label: <prefLabel>` beside the resolved full IRI on hover.
+
+[^16]:
+    FOLIO (Federated Open Legal Information Ontology), https://folio.openlegalstandard.org. The concept _Murder_ resolves at
+    `https://folio.openlegalstandard.org/R7Ttdyo4FsvaupPKT35Qry0`; every FOLIO concept IRI carries the same `R`-prefixed base62 local name.

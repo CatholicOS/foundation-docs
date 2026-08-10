@@ -137,11 +137,20 @@ The following documents are included in builds and deployments:
 | Research           | `research/fragmented-catholic-digital-governance.md`        |
 | Research           | `research/governance-as-code-catholic-technology.md`        |
 | Research           | `research/trusted-data-infrastructure-catholic-ministry.md` |
+| Research           | `research/identifier-durability-opaque-canonical-iris.md`   |
 | Standards          | `standards/overview.md`                                     |
 | Standards          | `standards/committees.md`                                   |
 
 To add a new document, update the `DOCS` array in all three places:
 
-1. `.github/workflows/deploy-docs.yml` (lines 27-38 and 87-98)
-2. `scripts/build-standalone-html.sh` (lines 10-21)
-3. `scripts/build-combined-pdf.sh` (lines 12-24)
+1. `.github/workflows/deploy-docs.yml` (lines 27-39 and 106-118)
+2. `scripts/build-standalone-html.sh` (lines 10-22)
+3. `scripts/build-combined-pdf.sh` (lines 10-25)
+
+### Excluded: `standards/drafts/`
+
+`standards/drafts/` holds external committee documents reproduced **verbatim**
+(e.g. CDCF Catholic URI Scheme drafts). Their text must not be edited or
+reformatted, so they are excluded from `npm run lint:md`, `npm run lint:md:fix`,
+and `npm run format:md`, and they are deliberately absent from the `DOCS` arrays
+above -- they are neither deployed to WordPress nor included in build artifacts.

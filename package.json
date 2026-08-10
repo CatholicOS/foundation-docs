@@ -3,9 +3,9 @@
   "private": true,
   "description": "Governance documentation for the Catholic Digital Commons Foundation",
   "scripts": {
-    "lint:md": "markdownlint-cli2 \"**/*.md\" \"#**/node_modules\" \"#.yarn\"",
-    "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#**/node_modules\" \"#.yarn\"",
-    "format:md": "prettier --write \"**/*.md\" \"!**/node_modules/**\"",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"#**/node_modules\" \"#.yarn\" \"#standards/drafts\"",
+    "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#**/node_modules\" \"#.yarn\" \"#standards/drafts\"",
+    "format:md": "prettier --write \"**/*.md\" \"!**/node_modules/**\" \"!standards/drafts/**\"",
     "build:html": "bash scripts/build-standalone-html.sh",
     "build:pdf": "bash scripts/build-combined-pdf.sh",
     "prepare": "husky"
