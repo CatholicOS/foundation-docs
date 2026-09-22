@@ -56,6 +56,17 @@ Supplementary research memos informing the design of the vetting criteria.
 | [trusted-data-infrastructure-catholic-ministry.md](./research/trusted-data-infrastructure-catholic-ministry.md) | Research memo | Trusted data infrastructure for Catholic ministry.      |
 
 ---
+## The CDCF Process: A Bidirectional Commons
+
+The Catholic Digital Commons Foundation (CDCF) does not operate as a top-down gatekeeper. In alignment with our Manifesto, we steward a **Builder Commons** designed to aggregate, vet, and communalize open-source digital tools. 
+
+Instead of a one-directional evaluation, projects enter a collaborative **Formation Pathway**. The CDCF actively accompanies creators by providing:
+*   **Rigorous Peer Review:** Technical assistance to refine architectures.
+*   **Shared Documentation:** Open playbooks to simplify compliance.
+*   **Canonical & Technical Guidance:** Mentorship to ensure tools are robust, secure, and faith-aligned.
+
+Rather than merely consuming commercial vendor tools, Catholic institutions are empowered as active builders, contributing local innovations upward so they can be communalized into global resources.
+---
 
 ## The Two-Gate Framework
 
