@@ -5,6 +5,14 @@ alignment, technical excellence, and sustainable governance.
 
 ---
 
+## The Formation Pathway Philosophy
+
+In accordance with the CDCF Manifesto, our lifecycle stages do not serve as an exclusionary corporate screening funnel. Instead, they represent an active **Formation Pathway** where the Technical Advisory Council (TAC) and the project team collaborate through mutual accompaniment. 
+
+Each gate is a **Formation Milestone**. For every technical or ethical requirement a project must fulfill, the CDCF commits to reciprocal support: offering technical peer reviews, providing open-source compliance playbooks, and delivering canonical mentoring to help local innovations successfully mature into global resources.
+
+---
+
 ## 1. Proposal Phase
 
 Any community member or institution can propose a project for CDCF consideration.
