@@ -1,4 +1,13 @@
 # CDCF Project Vetting Criteria
+# Project Vetting Criteria & AI Domain Extensions
+
+> *"According to the grace of God given to me, like a wise master builder I laid a foundation, and another is building upon it."* — 1 Corinthians 3:10
+
+## Purpose and Rationale
+This framework serves as a formation standard, not a mechanism for exclusion. The eight criteria outlined below represent the benchmarks required for a project to be recognized as **commons-ready**. 
+
+Passing a gate is a **formation milestone**, not a point of final judgment. If a project does not meet specific technical or ethical extensions (such as the Rome Call AI additions) upon initial review, the CDCF Technical Advisory Council (TAC) enters into active accompaniment with the project team to provide peer review, clear code examples, and remediation pathways.
+
 
 |             |                                                                                                                                  |
 | :---------- | :------------------------------------------------------------------------------------------------------------------------------- |
@@ -185,6 +194,10 @@ unintended ways."[^1]
 This criterion requires either documented subgroup performance analysis or an explicit acknowledgment of its absence paired with a concrete plan to obtain it. A submitter who has
 engaged these questions with rigor and documented both the evidence and the gaps satisfies this criterion.
 
+### Criterion 5b: Impartiality & Algorithmic Fairness (AI Domain Extension — Gate 1)
+*   **Requirement:** Identify, document, and mitigate AI bias.
+*   **Developer Deliverables:** Data Bias Evaluation, Data Representativeness Analysis.
+*   **Gap Remediation:** Subgroup Testing Mitigation Plan option.
 ---
 
 ### Criterion 6: Deployment Governance Specification
@@ -212,6 +225,10 @@ confidence levels, named ownership, identified gaps, and explicit rationale befo
 conditional-go, no-go, and defer**, each carrying distinct documentation requirements and escalation obligations. Full technical implementation at this level of rigor is
 aspirational rather than required at the incubation stage. What is required is that the governance specification exists as a written, reviewable document, and that the project's
 architecture is compatible with its enforcement as institutional capacity develops.
+
+### Criterion 6b: Post-Deployment Reliability & Monitoring (AI Domain Extension — Gate 2)
+*   **Requirement:** Ensure dependability and graceful failure.
+*   **Developer Deliverables:** Monitoring Architecture, Data Drift Protocol, Kill-Switch Protocol.
 
 ---
 
@@ -243,6 +260,10 @@ Data stewardship requirements are proportionate to the project's risk profile. P
 **AI domain extension.** For AI tools, this criterion extends to training data governance. A tool trained on data from Catholic institutions carries an obligation to those
 institutions and to the populations they serve. The terms under which that data was used, and the terms under which it may be used in future model updates, must be disclosed and
 evaluated as part of the graduation review.
+
+### Criterion 7: Security Architecture & Data Boundaries (AI Domain Extension — Gate 1 Expansion)
+*   **Requirement:** Enforce data minimization and security.
+*   **Developer Deliverables:** Sanitization Report, Retrieval Poisoning Testing.
 
 ---
 
